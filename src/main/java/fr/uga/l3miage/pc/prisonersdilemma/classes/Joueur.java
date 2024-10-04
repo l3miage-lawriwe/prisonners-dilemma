@@ -20,6 +20,9 @@ public class Joueur {
 
     public Joueur(boolean controle_utilisateur) {
         this.controle_utilisateur = controle_utilisateur;
+        if(!controle_utilisateur){
+            definirStrategie();
+        }
     }
 
     // le joueur joue sont coup, si utilisateur, utilise console de commande, sinon on lnce l'IA
@@ -57,17 +60,25 @@ public class Joueur {
         String reponse = reader.next();
 
         if (reponse.equals("Y")){
-            System.out.println("choisir strategie");
-            int numero_strategie = reader.nextInt();
-
-            /*
-            *
-            *  ICI on change la strategie affectee selon l'INT que l'utilisateur rentre
-            *
-            * */
-
-            strategie = new Strategie_toujour_trahir();
             controle_utilisateur = false;
+            definirStrategie();
+
         }
+    }
+
+
+    // definir la strat de L'IA
+    private void definirStrategie(){
+        Scanner reader = new Scanner(System.in);
+        System.out.println("choisir strategie");
+        int numero_strategie = reader.nextInt();
+
+        /*
+         *
+         *  ICI on change la strategie affectee selon l'INT que l'utilisateur rentre
+         *
+         * */
+
+        strategie = new Strategie_toujour_trahir();
     }
 }
