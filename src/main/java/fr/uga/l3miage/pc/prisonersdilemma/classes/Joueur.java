@@ -4,6 +4,8 @@ import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_trahir;
 
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +18,7 @@ public class Joueur {
     private Strategie strategie;
 
     // historique, sert a l'IA pour décider
-    private List<PartieJouee> historique;
+    private List<PartieJouee> historique = new ArrayList<PartieJouee>();
 
     public Joueur(boolean controle_utilisateur) {
         this.controle_utilisateur = controle_utilisateur;
@@ -44,9 +46,6 @@ public class Joueur {
         for(PartieJouee pj : historique){
             score = score + pj.resultat_joueur;
         }
-
-        demanderActiverIA();
-
         return score;
     }
 
