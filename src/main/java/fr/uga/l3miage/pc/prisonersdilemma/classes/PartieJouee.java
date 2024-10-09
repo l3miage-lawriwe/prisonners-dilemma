@@ -8,13 +8,41 @@ public class PartieJouee {
     // FALSE veut dire trahir
 
 
-    public boolean choix_joueur;
-    public boolean choix_autre_joueur;
-    public int resultat_joueur;
 
-    public PartieJouee(boolean choix_joueur, boolean choix_autre_joueur, int resultat_joueur) {
-        this.choix_joueur = choix_joueur;
-        this.choix_autre_joueur = choix_autre_joueur;
-        this.resultat_joueur = resultat_joueur;
+
+    private boolean choixJoueur;
+    private boolean choixAutreJoueur;
+    private int resultatJoueur;
+
+    public PartieJouee(boolean choixJoueur, boolean choixAutreJoueur, int resultatJoueur) {
+        this.choixJoueur = choixJoueur;
+        this.choixAutreJoueur = choixAutreJoueur;
+        this.resultatJoueur = resultatJoueur;
     }
+
+    public boolean isChoixJoueur() {
+        return choixJoueur;
+    }
+
+    public void setChoixJoueur(boolean choixJoueur) {
+        this.choixJoueur = choixJoueur;
+    }
+
+    public boolean isChoixAutreJoueur() {
+        return choixAutreJoueur;
+    }
+
+    public void setChoixAutreJoueur(boolean choixAutreJoueur) {
+        this.choixAutreJoueur = choixAutreJoueur;
+    }
+
+    public int getResultatJoueur() {
+        return resultatJoueur;
+    }
+
+    public void setResultatJoueur(int resultatJoueur) {
+        this.resultatJoueur = resultatJoueur;
+    }
+
+
 }

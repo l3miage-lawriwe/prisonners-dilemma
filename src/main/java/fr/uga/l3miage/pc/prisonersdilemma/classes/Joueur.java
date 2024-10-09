@@ -52,8 +52,8 @@ public class Joueur {
     public int scoreTotal(){
         int score = 0;
 
-        for(PartieJouee pj : historique){
-            score = score + pj.resultat_joueur;
+        for(PartieJouee partieJouee : historique){
+            score = score + partieJouee.getResultatJoueur();
         }
         return score;
     }

@@ -11,7 +11,7 @@ public class StrategieDonnantDonnantSoupconneux implements Strategie {
         if(historique.isEmpty()){
             return false;
         } else {
-            return historique.getLast().choix_autre_joueur;
+            return historique.getLast().isChoixAutreJoueur();
         }
     }
 }

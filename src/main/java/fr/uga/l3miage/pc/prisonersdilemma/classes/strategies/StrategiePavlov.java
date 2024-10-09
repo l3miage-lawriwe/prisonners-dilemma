@@ -11,10 +11,10 @@ public class StrategiePavlov implements Strategie {
         if(historique.isEmpty()){
             return true;
         } else {
-            if(historique.getLast().resultat_joueur > PartieIterative.PIEGEE){
-                return historique.getLast().choix_joueur;
+            if(historique.getLast().getResultatJoueur() > PartieIterative.PIEGEE){
+                return historique.getLast().isChoixJoueur();
             } else {
-                return !(historique.getLast().choix_joueur);
+                return !(historique.getLast().isChoixJoueur());
             }
         }
     }

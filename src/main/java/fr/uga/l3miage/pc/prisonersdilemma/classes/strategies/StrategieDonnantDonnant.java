@@ -11,7 +11,7 @@ public class StrategieDonnantDonnant implements Strategie {
         if(historique.isEmpty()){
             return true;
         } else {
-            return historique.getLast().choix_autre_joueur;
+            return historique.getLast().isChoixAutreJoueur();
         }
     }
 }

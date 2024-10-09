@@ -12,7 +12,7 @@ public class StrategieRancunier implements Strategie {
         int i = 0;
 
         while(i < historique.size()){
-            if (!historique.get(i).choix_autre_joueur) {
+            if (!historique.get(i).isChoixAutreJoueur()) {
                 return false;
             }
             i++;

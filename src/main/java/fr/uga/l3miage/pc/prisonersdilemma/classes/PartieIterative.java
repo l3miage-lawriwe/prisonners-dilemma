@@ -16,70 +16,70 @@ public class PartieIterative {
 
 
 
-    private Joueur joueur1;
-    private Joueur joueur2;
+    private final Joueur joueur1;
+    private final Joueur joueur2;
 
-    private int nb_iterations;
+    private final int nbIterations;
 
     // contructeur decide si les joueurs sont des utilisateurs ou des IA
-    public PartieIterative(boolean controle_joueur1, boolean controle_joueur2,int nb_iterations) {
-        this.joueur1 = new Joueur(controle_joueur1);
-        this.joueur2 = new Joueur(controle_joueur2);
-        this.nb_iterations = nb_iterations;
+    public PartieIterative(boolean controleJoueur1, boolean controleJoueur2,int nbIterations) {
+        this.joueur1 = new Joueur(controleJoueur1);
+        this.joueur2 = new Joueur(controleJoueur2);
+        this.nbIterations = nbIterations;
     }
 
     // méthode pour jouer un partie complète
     public void jouerPartie() {
-        for (int iteration = 0; iteration < nb_iterations; iteration++) {
+        for (int iteration = 0; iteration < nbIterations; iteration++) {
             jouerIteration();
         }
-        afficherScores(nb_iterations);
+        afficherScores(nbIterations);
 
     }
 
     public void jouerIteration(){
 
         // les joueurs jouent
-        boolean choix_joueur1 = joueur1.jouer();
-        boolean choix_joueur2 = joueur2.jouer();
+        boolean choixJoueur1 = joueur1.jouer();
+        boolean choixJoueur2 = joueur2.jouer();
 
         // calcul des résultats
-        int resultat_Joueur1;
-        int resultat_Joueur2;
-        if (choix_joueur1) {
+        int resultatJoueur1;
+        int resultatJoueur2;
+        if (choixJoueur1) {
             System.out.println("joueur 1 a coopéré" );
-            if (choix_joueur2) {
+            if (choixJoueur2) {
                 System.out.println("joueur 2 a coopéré" );
-                resultat_Joueur1 = COOPERE;
-                resultat_Joueur2 = COOPERE;
+                resultatJoueur1 = COOPERE;
+                resultatJoueur2 = COOPERE;
             } else {
                 System.out.println("joueur 2 a trahis" );
-                resultat_Joueur1 = DUPEE;
-                resultat_Joueur2 = TRAHIT;
+                resultatJoueur1 = DUPEE;
+                resultatJoueur2 = TRAHIT;
             }
         } else {
             System.out.println("joueur 1 a trahis" );
-            if (choix_joueur2) {
+            if (choixJoueur2) {
                 System.out.println("joueur 2 a coopéré" );
-                resultat_Joueur1 = TRAHIT;
-                resultat_Joueur2 = DUPEE;
+                resultatJoueur1 = TRAHIT;
+                resultatJoueur2 = DUPEE;
 
             } else {
                 System.out.println("joueur 2 a trahis" );
-                resultat_Joueur1 = PIEGEE;
-                resultat_Joueur2 = PIEGEE;
+                resultatJoueur1 = PIEGEE;
+                resultatJoueur2 = PIEGEE;
 
             }
         }
 
         // affichage des resultats
-        System.out.println("joueur 1 a gagné : " + resultat_Joueur1 );
-        System.out.println("joueur 2 a gagné : " + resultat_Joueur2 );
+        System.out.println("joueur 1 a gagné : " + resultatJoueur1 );
+        System.out.println("joueur 2 a gagné : " + resultatJoueur2 );
 
 
         // ajout des parties a l'historique pour les IA
-        joueur1.aJouterPartieHistorique(new PartieJouee(choix_joueur1,choix_joueur2,resultat_Joueur1));
-        joueur2.aJouterPartieHistorique(new PartieJouee(choix_joueur2,choix_joueur1,resultat_Joueur2));
+        joueur1.aJouterPartieHistorique(new PartieJouee(choixJoueur1,choixJoueur2,resultatJoueur1));
+        joueur2.aJouterPartieHistorique(new PartieJouee(choixJoueur2,choixJoueur1,resultatJoueur2));
 
     }
 
