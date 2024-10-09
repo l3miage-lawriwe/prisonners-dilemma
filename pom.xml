@@ -14,7 +14,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-
+        <sonar.host.url>http://im2ag-sonar.u-ga.fr:9000</sonar.host.url>
+        <sonar.projectKey>fr.uga.miage.m1:prisonners-dilemma_g2_3</sonar.projectKey>
 
 
 
