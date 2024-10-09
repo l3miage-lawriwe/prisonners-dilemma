@@ -5,7 +5,7 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieAleatoire extends Strategie{
+public class StrategieAleatoire implements Strategie {
     SecureRandom random = new SecureRandom();
 
     @Override
