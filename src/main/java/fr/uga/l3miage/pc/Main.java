@@ -1,10 +1,14 @@
 package fr.uga.l3miage.pc;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieIterative;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger log = LogManager.getLogger(Main.class);
+
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        log.info("Hello world!");
 
 
         PartieIterative partie = new PartieIterative(false,false,3);

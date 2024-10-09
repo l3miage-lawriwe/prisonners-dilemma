@@ -1,5 +1,8 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class PartieIterative {
 
 
@@ -13,7 +16,7 @@ public class PartieIterative {
     public static final int DUPEE = 0;
     public static final int COOPERE = 3;
     public static final int PIEGEE = 1;
-
+    private static final Logger log = LogManager.getLogger(PartieIterative.class);
 
 
     private final Joueur joueur1;
@@ -47,25 +50,25 @@ public class PartieIterative {
         int resultatJoueur1;
         int resultatJoueur2;
         if (choixJoueur1) {
-            System.out.println("joueur 1 a coopéré" );
+            log.info("joueur 1 a coopéré");
             if (choixJoueur2) {
-                System.out.println("joueur 2 a coopéré" );
+                log.info("joueur 2 a coopéré");
                 resultatJoueur1 = COOPERE;
                 resultatJoueur2 = COOPERE;
             } else {
-                System.out.println("joueur 2 a trahis" );
+                log.info("joueur 2 a trahis");
                 resultatJoueur1 = DUPEE;
                 resultatJoueur2 = TRAHIT;
             }
         } else {
-            System.out.println("joueur 1 a trahis" );
+            log.info("joueur 1 a trahis");
             if (choixJoueur2) {
-                System.out.println("joueur 2 a coopéré" );
+                log.info("joueur 2 a coopéré");
                 resultatJoueur1 = TRAHIT;
                 resultatJoueur2 = DUPEE;
 
             } else {
-                System.out.println("joueur 2 a trahis" );
+                log.info("joueur 2 a trahis");
                 resultatJoueur1 = PIEGEE;
                 resultatJoueur2 = PIEGEE;
 
@@ -73,8 +76,8 @@ public class PartieIterative {
         }
 
         // affichage des resultats
-        System.out.println("joueur 1 a gagné : " + resultatJoueur1 );
-        System.out.println("joueur 2 a gagné : " + resultatJoueur2 );
+        log.info("joueur 1 a gagné : {}", resultatJoueur1);
+        log.info("joueur 2 a gagné : {}", resultatJoueur2);
 
 
         // ajout des parties a l'historique pour les IA
@@ -84,8 +87,8 @@ public class PartieIterative {
     }
 
     public void afficherScores(int iterations){
-        System.out.println("la partie a durée " + iterations + " itérations" );
-        System.out.println("joueur 1 a un score de : " + joueur1.scoreTotal());
-        System.out.println("joueur 2 a un score de : " + joueur2.scoreTotal());
+        log.info("la partie a durée {} itérations", iterations);
+        log.info("joueur 1 a un score de : {}", joueur1.scoreTotal());
+        log.info("joueur 2 a un score de : {}", joueur2.scoreTotal());
     }
 }

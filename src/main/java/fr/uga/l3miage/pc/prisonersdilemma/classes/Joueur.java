@@ -13,15 +13,18 @@ import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategiePavlov;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieRancunier;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursCooperer;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursTrahir;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Joueur {
+    private static final Logger log = LogManager.getLogger(Joueur.class);
 
     // pour chaque choix :
     // TRUE veut dire coopérer
     // FALSE veut dire trahir
 
     // decide si l'IA ou l'utilisateur joue
-    private boolean controleUtilisateur;
+    private final boolean controleUtilisateur;
 
     // l'IA de decision si il n'y a pas d'utilisateur en controle
     private Strategie strategie;
@@ -40,7 +43,7 @@ public class Joueur {
     public boolean jouer(){
         if (controleUtilisateur){
             Scanner reader = new Scanner(System.in); // Reading from System.in
-            System.out.println("marquer 'T' pour trahir, marquer autre chose pour coopérer");
+            log.info("marquer 'T' pour trahir, marquer autre chose pour coopérer");
             String reponse = reader.next();
 
             return !(reponse.equals("T"));
@@ -62,23 +65,11 @@ public class Joueur {
         historique.add(nouvellePartie);
     }
 
-    private void demanderActiverIA(){
-        Scanner reader = new Scanner(System.in); // Reading from System.in
-        System.out.println("activer IA ? (Y/N)");
-        String reponse = reader.next();
-
-        if (reponse.equals("Y")){
-            controleUtilisateur = false;
-            definirStrategie();
-
-        }
-    }
-
 
     // definir la strat de L'IA
     private void definirStrategie(){
         Scanner reader = new Scanner(System.in);
-        System.out.println("choisir strategie");
+        log.info("choisir strategie");
 
         int numeroStrategie = reader.nextInt();
 
