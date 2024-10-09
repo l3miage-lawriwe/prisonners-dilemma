@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Scanner;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_aleatoire;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_donnant_donnant;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_donnant_donnant_soupconneux;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_pavlov;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_rancunier;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_coopérer;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_trahir;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieAleatoire;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieDonnantDonnant;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieDonnantDonnantSoupconneux;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategiePavlov;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieRancunier;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursCooperer;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursTrahir;
 
 public class Joueur {
 
@@ -21,24 +21,24 @@ public class Joueur {
     // FALSE veut dire trahir
 
     // decide si l'IA ou l'utilisateur joue
-    private boolean controle_utilisateur;
+    private boolean controleUtilisateur;
 
     // l'IA de decision si il n'y a pas d'utilisateur en controle
     private Strategie strategie;
 
     // historique, sert a l'IA pour décider
-    private List<PartieJouee> historique = new ArrayList<PartieJouee>();
+    private final List<PartieJouee> historique = new ArrayList<>();
 
-    public Joueur(boolean controle_utilisateur) {
-        this.controle_utilisateur = controle_utilisateur;
-        if(!controle_utilisateur){
+    public Joueur(boolean controleUtilisateur) {
+        this.controleUtilisateur = controleUtilisateur;
+        if(!controleUtilisateur){
             definirStrategie();
         }
     }
 
     // le joueur joue sont coup, si utilisateur, utilise console de commande, sinon on lance l'IA
     public boolean jouer(){
-        if (controle_utilisateur){
+        if (controleUtilisateur){
             Scanner reader = new Scanner(System.in); // Reading from System.in
             System.out.println("marquer 'T' pour trahir, marquer autre chose pour coopérer");
             String reponse = reader.next();
@@ -58,8 +58,8 @@ public class Joueur {
         return score;
     }
 
-    public void aJouterPartieHistorique(PartieJouee nouvelle_partie){
-        historique.add(nouvelle_partie);
+    public void aJouterPartieHistorique(PartieJouee nouvellePartie){
+        historique.add(nouvellePartie);
     }
 
     private void demanderActiverIA(){
@@ -68,7 +68,7 @@ public class Joueur {
         String reponse = reader.next();
 
         if (reponse.equals("Y")){
-            controle_utilisateur = false;
+            controleUtilisateur = false;
             definirStrategie();
 
         }
@@ -80,29 +80,29 @@ public class Joueur {
         Scanner reader = new Scanner(System.in);
         System.out.println("choisir strategie");
 
-        int numero_strategie = reader.nextInt();
+        int numeroStrategie = reader.nextInt();
 
-        switch(numero_strategie) {
+        switch(numeroStrategie) {
             case 0:
-                strategie = new Strategie_toujour_trahir();
+                strategie = new StrategieToujoursTrahir();
                 break;
             case 1:
-                strategie = new Strategie_rancunier();
+                strategie = new StrategieRancunier();
                 break;
             case 2:
-                strategie = new Strategie_aleatoire();
+                strategie = new StrategieAleatoire();
                 break;
             case 3:
-                strategie = new Strategie_donnant_donnant_soupconneux();
+                strategie = new StrategieDonnantDonnantSoupconneux();
                 break;
             case 4:
-                strategie = new Strategie_donnant_donnant();
+                strategie = new StrategieDonnantDonnant();
                 break;
             case 5:
-                strategie = new Strategie_pavlov();
+                strategie = new StrategiePavlov();
                 break;
             default:
-                strategie = new Strategie_toujour_coopérer();
+                strategie = new StrategieToujoursCooperer();
           }
           
 
