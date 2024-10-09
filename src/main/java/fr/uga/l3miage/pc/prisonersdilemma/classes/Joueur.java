@@ -1,15 +1,24 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes;
 
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_trahir;
-
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_aleatoire;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_donnant_donnant;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_donnant_donnant_soupconneux;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_pavlov;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_rancunier;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_coopérer;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_trahir;
+
 public class Joueur {
+
+    // pour chaque choix :
+    // TRUE veut dire coopérer
+    // FALSE veut dire trahir
 
     // decide si l'IA ou l'utilisateur joue
     private boolean controle_utilisateur;
@@ -27,7 +36,7 @@ public class Joueur {
         }
     }
 
-    // le joueur joue sont coup, si utilisateur, utilise console de commande, sinon on lnce l'IA
+    // le joueur joue sont coup, si utilisateur, utilise console de commande, sinon on lance l'IA
     public boolean jouer(){
         if (controle_utilisateur){
             Scanner reader = new Scanner(System.in); // Reading from System.in
@@ -70,14 +79,41 @@ public class Joueur {
     private void definirStrategie(){
         Scanner reader = new Scanner(System.in);
         System.out.println("choisir strategie");
+
         int numero_strategie = reader.nextInt();
+
+        switch(numero_strategie) {
+            case 0:
+                strategie = new Strategie_toujour_trahir();
+                break;
+            case 1:
+                strategie = new Strategie_rancunier();
+                break;
+            case 2:
+                strategie = new Strategie_aleatoire();
+                break;
+            case 3:
+                strategie = new Strategie_donnant_donnant_soupconneux();
+                break;
+            case 4:
+                strategie = new Strategie_donnant_donnant();
+                break;
+            case 5:
+                strategie = new Strategie_pavlov();
+                break;
+            default:
+                strategie = new Strategie_toujour_coopérer();
+          }
+          
 
         /*
          *
          *  ICI on change la strategie affectee selon l'INT que l'utilisateur rentre
+         *  
+         * A IMPLEMENTER DE MANIERE PLUS LISIBLE PAR L'UTILISATEUR DANS LE FUTUR
          *
          * */
 
-        strategie = new Strategie_toujour_trahir();
+        
     }
 }

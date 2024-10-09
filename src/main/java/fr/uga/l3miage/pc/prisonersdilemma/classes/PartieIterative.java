@@ -2,11 +2,17 @@ package fr.uga.l3miage.pc.prisonersdilemma.classes;
 
 public class PartieIterative {
 
-    //les valeurs donnes dans le sujet
-    private final int T = 5;
-    private final int D = 0;
-    private final int C = 3;
-    private final int P = 1;
+
+    // pour chaque choix :
+    // TRUE veut dire coopérer
+    // FALSE veut dire trahir
+
+
+    //les valeurs de résultat donnes dans le sujet
+    public static final int TRAHIT = 5;
+    public static final int DUPEE = 0;
+    public static final int COOPERE = 3;
+    public static final int PIEGEE = 1;
 
 
 
@@ -44,24 +50,24 @@ public class PartieIterative {
             System.out.println("joueur 1 a coopéré" );
             if (choix_joueur2) {
                 System.out.println("joueur 2 a coopéré" );
-                resultat_Joueur1 = C;
-                resultat_Joueur2 = C;
+                resultat_Joueur1 = COOPERE;
+                resultat_Joueur2 = COOPERE;
             } else {
                 System.out.println("joueur 2 a trahis" );
-                resultat_Joueur1 = D;
-                resultat_Joueur2 = T;
+                resultat_Joueur1 = DUPEE;
+                resultat_Joueur2 = TRAHIT;
             }
         } else {
             System.out.println("joueur 1 a trahis" );
             if (choix_joueur2) {
                 System.out.println("joueur 2 a coopéré" );
-                resultat_Joueur1 = T;
-                resultat_Joueur2 = D;
+                resultat_Joueur1 = TRAHIT;
+                resultat_Joueur2 = DUPEE;
 
             } else {
                 System.out.println("joueur 2 a trahis" );
-                resultat_Joueur1 = P;
-                resultat_Joueur2 = P;
+                resultat_Joueur1 = PIEGEE;
+                resultat_Joueur2 = PIEGEE;
 
             }
         }
@@ -72,8 +78,8 @@ public class PartieIterative {
 
 
         // ajout des parties a l'historique pour les IA
-        joueur1.aJouterPartieHistorique(new PartieJouee(choix_joueur1,resultat_Joueur1));
-        joueur2.aJouterPartieHistorique(new PartieJouee(choix_joueur2,resultat_Joueur2));
+        joueur1.aJouterPartieHistorique(new PartieJouee(choix_joueur1,choix_joueur2,resultat_Joueur1));
+        joueur2.aJouterPartieHistorique(new PartieJouee(choix_joueur2,choix_joueur1,resultat_Joueur2));
 
     }
 
