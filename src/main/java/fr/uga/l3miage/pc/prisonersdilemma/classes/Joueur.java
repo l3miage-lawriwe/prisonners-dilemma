@@ -5,14 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_aleatoire;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_donnant_donnant;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_donnant_donnant_soupconneux;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_pavlov;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_rancunier;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_coopérer;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie_toujour_trahir;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.*;
+
 
 public class Joueur {
 
@@ -84,25 +78,25 @@ public class Joueur {
 
         switch(numero_strategie) {
             case 0:
-                strategie = new Strategie_toujour_trahir();
+                strategie = new StrategieToujoursCooperer();
                 break;
             case 1:
-                strategie = new Strategie_rancunier();
+                strategie = new StrategieRancunier();
                 break;
             case 2:
-                strategie = new Strategie_aleatoire();
+                strategie = new StrategieAleatoire();
                 break;
             case 3:
-                strategie = new Strategie_donnant_donnant_soupconneux();
+                strategie = new StrategieDonnantDonnantSoupconneux();
                 break;
             case 4:
-                strategie = new Strategie_donnant_donnant();
+                strategie = new StrategieDonnantDonnant();
                 break;
             case 5:
-                strategie = new Strategie_pavlov();
+                strategie = new StrategiePavlov();
                 break;
             default:
-                strategie = new Strategie_toujour_coopérer();
+                strategie = new StrategieToujoursCooperer();
           }
           
 
