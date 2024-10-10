@@ -1,4 +1,4 @@
-package fr.uga.l3miage.pc.prisonersdilemma.StrategiesTest;
+package fr.uga.l3miage.pc.prisonersdilemma;
 
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
@@ -16,21 +16,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StrategiesTest {
     @Test
     void testToujourTrahir() {
-        Strategie strategieTraitre = new StrategieToujoursTrahir();
+        StrategieToujoursTrahir strategieTraitre = new StrategieToujoursTrahir();
         List<PartieJouee> historique = new ArrayList<>();
         assertFalse(strategieTraitre.jouer(historique));
     }
 
     @Test
     void testToujourcooperer() {
-        Strategie strategieNaif = new StrategieToujoursCooperer();
+        StrategieToujoursCooperer strategieNaif = new StrategieToujoursCooperer();
         List<PartieJouee> historique = new ArrayList<>();
         assertTrue(strategieNaif.jouer(historique));
     }
 
     @Test
     void testDonnanDonnant() {
-        Strategie strategieDonnantDonnant = new StrategieDonnantDonnant();
+        StrategieDonnantDonnant strategieDonnantDonnant = new StrategieDonnantDonnant();
         List<PartieJouee> historique = new ArrayList<>();
         assertTrue(strategieDonnantDonnant.jouer(historique));
 
@@ -46,7 +46,7 @@ class StrategiesTest {
 
     @Test
     void testDonnanDonnantSoupconneux() {
-        Strategie strategieDonnantDonnantSoupconneux = new StrategieDonnantDonnantSoupconneux();
+        StrategieDonnantDonnantSoupconneux strategieDonnantDonnantSoupconneux = new StrategieDonnantDonnantSoupconneux();
         List<PartieJouee> historique = new ArrayList<>();
         assertFalse(strategieDonnantDonnantSoupconneux.jouer(historique));
 
@@ -62,7 +62,7 @@ class StrategiesTest {
 
     @Test
     void testRancunier() {
-        Strategie strategieRancunier = new StrategieRancunier();
+        StrategieRancunier strategieRancunier = new StrategieRancunier();
         List<PartieJouee> historique = new ArrayList<>();
         assertTrue(strategieRancunier.jouer(historique));
 
@@ -74,5 +74,21 @@ class StrategiesTest {
 
         historique.add(new PartieJouee(true,true,3));
         assertFalse(strategieRancunier.jouer(historique));
+    }
+
+    @Test
+    void testPavlov() {
+        StrategiePavlov strategiePavlov = new StrategiePavlov();
+        List<PartieJouee> historique = new ArrayList<>();
+        assertTrue(strategiePavlov.jouer(historique));
+
+        historique.add(new PartieJouee(true,true,3));
+        assertTrue(strategiePavlov.jouer(historique));
+
+        historique.add(new PartieJouee(true,false,0));
+        assertFalse(strategiePavlov.jouer(historique));
+
+        historique.add(new PartieJouee(true,true,3));
+        assertTrue(strategiePavlov.jouer(historique));
     }
 }

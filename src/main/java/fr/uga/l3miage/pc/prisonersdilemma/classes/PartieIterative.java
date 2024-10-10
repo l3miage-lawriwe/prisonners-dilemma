@@ -24,10 +24,10 @@ public class PartieIterative {
 
     private final int nbIterations;
 
-    // contructeur decide si les joueurs sont des utilisateurs ou des IA
-    public PartieIterative(boolean controleJoueur1, boolean controleJoueur2,int nbIterations) {
-        this.joueur1 = new Joueur(controleJoueur1);
-        this.joueur2 = new Joueur(controleJoueur2);
+
+    public PartieIterative(int nbIterations) {
+        this.joueur1 = new Joueur();
+        this.joueur2 = new Joueur();
         this.nbIterations = nbIterations;
     }
 

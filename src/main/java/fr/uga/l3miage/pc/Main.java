@@ -11,8 +11,9 @@ public class Main {
         log.info("Hello world!");
 
 
-        PartieIterative partie = new PartieIterative(false,false,3);
+        PartieIterative partie = new PartieIterative(3);
 
         partie.jouerPartie();
     }
+
 }
