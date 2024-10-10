@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieAleatoire;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieDonnantDonnant;
@@ -13,8 +16,6 @@ import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategiePavlov;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieRancunier;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursCooperer;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursTrahir;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class Joueur {
     private static final Logger log = LogManager.getLogger(Joueur.class);
@@ -45,11 +46,12 @@ public class Joueur {
             Scanner reader = new Scanner(System.in); // Reading from System.in
             log.info("marquer 'T' pour trahir, marquer autre chose pour coopérer");
             String reponse = reader.next();
-
+            reader.close();
             return !(reponse.equals("T"));
         } else {
             return strategie.jouer(historique);
         }
+        
     }
 
     public int scoreTotal(){
@@ -73,28 +75,16 @@ public class Joueur {
 
         int numeroStrategie = reader.nextInt();
 
-        switch(numeroStrategie) {
-            case 0:
-                strategie = new StrategieToujoursTrahir();
-                break;
-            case 1:
-                strategie = new StrategieRancunier();
-                break;
-            case 2:
-                strategie = new StrategieAleatoire();
-                break;
-            case 3:
-                strategie = new StrategieDonnantDonnantSoupconneux();
-                break;
-            case 4:
-                strategie = new StrategieDonnantDonnant();
-                break;
-            case 5:
-                strategie = new StrategiePavlov();
-                break;
-            default:
-                strategie = new StrategieToujoursCooperer();
-          }
+        strategie = switch (numeroStrategie) {
+            case 0 -> new StrategieToujoursTrahir();
+            case 1 -> new StrategieRancunier();
+            case 2 -> new StrategieAleatoire();
+            case 3 -> new StrategieDonnantDonnantSoupconneux();
+            case 4 -> new StrategieDonnantDonnant();
+            case 5 -> new StrategiePavlov();
+            default -> new StrategieToujoursCooperer();
+        };
+          reader.close();
           
 
         /*
