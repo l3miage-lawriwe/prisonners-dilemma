@@ -4,7 +4,6 @@ package fr.uga.l3miage.pc.prisonersdilemma;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
 class StrategiesTest {
     @Test
     void testToujourTrahir() {

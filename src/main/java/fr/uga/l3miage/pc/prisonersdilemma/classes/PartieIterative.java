@@ -31,13 +31,26 @@ public class PartieIterative {
         this.nbIterations = nbIterations;
     }
 
+    public PartieIterative(int stratJoueur1, int stratJoueur2,int nbIterations) {
+        this.joueur1 = new Joueur(stratJoueur1);
+        this.joueur2 = new Joueur(stratJoueur2);
+        this.nbIterations = nbIterations;
+    }
+
     // méthode pour jouer un partie complète
-    public void jouerPartie() {
+    public Joueur jouerPartie() {
         for (int iteration = 0; iteration < nbIterations; iteration++) {
             jouerIteration();
         }
         afficherScores(nbIterations);
 
+        if(joueur1.scoreTotal() > joueur2.scoreTotal()) {
+            return joueur1;
+        } else if(joueur2.scoreTotal() > joueur1.scoreTotal()) {
+            return joueur2;
+        } else {
+            return null;
+        }
     }
 
     public void jouerIteration(){

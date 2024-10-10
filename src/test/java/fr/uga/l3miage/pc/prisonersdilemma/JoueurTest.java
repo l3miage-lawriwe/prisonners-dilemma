@@ -4,12 +4,11 @@ package fr.uga.l3miage.pc.prisonersdilemma;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.Joueur;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
+
 class JoueurTest {
     @Test
     void testScoreTotal() {

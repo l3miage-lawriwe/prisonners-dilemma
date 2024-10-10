@@ -24,24 +24,12 @@ public class PartieJouee {
         return choixJoueur;
     }
 
-    public void setChoixJoueur(boolean choixJoueur) {
-        this.choixJoueur = choixJoueur;
-    }
-
     public boolean isChoixAutreJoueur() {
         return choixAutreJoueur;
     }
 
-    public void setChoixAutreJoueur(boolean choixAutreJoueur) {
-        this.choixAutreJoueur = choixAutreJoueur;
-    }
-
     public int getResultatJoueur() {
         return resultatJoueur;
-    }
-
-    public void setResultatJoueur(int resultatJoueur) {
-        this.resultatJoueur = resultatJoueur;
     }
 
 
