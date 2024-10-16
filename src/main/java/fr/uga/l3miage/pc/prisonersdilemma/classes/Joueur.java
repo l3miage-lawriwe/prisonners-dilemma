@@ -25,7 +25,7 @@ public class Joueur {
     private final List<PartieJouee> historique = new ArrayList<>();
 
     public Joueur(int strategie) {
-        definirStrategieAvecInt(strategie);
+        this.strategie = StrategieFactory.createStrategie(strategie);
     }
 
     public Joueur() {
@@ -58,8 +58,7 @@ public class Joueur {
 
         int numeroStrategie = reader.nextInt();
 
-        definirStrategieAvecInt(numeroStrategie);
-
+        strategie = StrategieFactory.createStrategie(numeroStrategie);
         /*
          *
          *  ICI on change la strategie affectee selon l'INT que l'utilisateur rentre
@@ -69,17 +68,5 @@ public class Joueur {
          * */
     }
 
-    private void definirStrategieAvecInt(int numeroStrategie){
-        strategie = switch (numeroStrategie) {
-            case 1 -> new StrategieToujoursCooperer();
-            case 2 -> new StrategieToujoursTrahir();
-            case 3 -> new StrategieDonnantDonnantSoupconneux();
-            case 4 -> new StrategieDonnantDonnant();
-            case 5 -> new StrategiePavlov();
-            case 6 -> new StrategieRancunier();
-            case 7 -> new StrategieAleatoire();
 
-            default -> new StrategieUtilisateur();
-        };
-    }
 }
