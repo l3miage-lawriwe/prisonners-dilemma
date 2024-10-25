@@ -4,14 +4,17 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieDonnantDonnant extends Strategie {
+public class StrategiePavlovAleatoire extends Strategie {
     @Override
     public boolean jouer(List<PartieJouee> historique){
 
-        if(historique.isEmpty()){
-            return true;
+        Strategie strat;
+
+        if (this.random.nextInt(100) > 90){
+            strat = new StrategieAleatoire();
         } else {
-            return historique.getLast().isChoixAutreJoueur();
+            strat = new StrategiePavlov ();
         }
+        return strat.jouer(historique);
     }
 }

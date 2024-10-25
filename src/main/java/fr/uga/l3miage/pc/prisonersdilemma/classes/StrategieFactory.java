@@ -1,4 +1,14 @@
-package fr.uga.l3miage.pc.prisonersdilemma.classes.strategies;
+package fr.uga.l3miage.pc.prisonersdilemma.classes;
+
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.Strategie;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieAleatoire;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieDonnantDonnant;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieDonnantDonnantSoupconneux;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategiePavlov;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieRancunier;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursCooperer;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieToujoursTrahir;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.StrategieUtilisateur;
 
 public class StrategieFactory {
 
