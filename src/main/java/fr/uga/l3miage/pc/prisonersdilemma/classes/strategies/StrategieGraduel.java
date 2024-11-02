@@ -23,7 +23,7 @@ public class StrategieGraduel extends Strategie {
                 // ici on vérifie le nb de trahisons que l'autre joueur a fait
                 nbTrahisonAutreJoueur = getNbTrahisonsAutreJoueur(historique);
                 // si le dernier coup de l'autre joueur est un trahison alor trahison + on charge la séquence de punition
-                if(!(historique.get(historique.size()-1).isChoixAutreJoueur())){
+                if(!(historique.getLast().isChoixAutreJoueur())){
                     addSequence(nbTrahisonAutreJoueur);
                     return false;
                 } else{

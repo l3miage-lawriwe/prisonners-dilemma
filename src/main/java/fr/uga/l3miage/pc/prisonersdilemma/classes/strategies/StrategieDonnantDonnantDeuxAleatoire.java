@@ -14,6 +14,7 @@ public class StrategieDonnantDonnantDeuxAleatoire extends Strategie {
 
         if (this.random.nextInt(100) > 90){
             strat = new StrategieAleatoire();
+            strat.setSeed(this.seed);
         } else {
             strat = new StrategieDonnantDonnantDeux();
         }

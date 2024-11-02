@@ -57,17 +57,6 @@ class StrategiesTest {
 
     }
 
-    /*@Test
-    void testAléatoire(){
-        StrategieAleatoire strategieAleatoire = new StrategieAleatoire();
-        List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieAleatoire.setSeed(1);
-
-        assertFalse(strategieAleatoire.jouer(historique));
-
-    }*/
-
 
     @Test
     synchronized void testDonnanDonnant() {
@@ -84,48 +73,6 @@ class StrategiesTest {
         historique.add(new PartieJouee(true,true,3));
         assertTrue(strategieDonnantDonnant.jouer(historique));
     }
-
-
-    /*@Test
-    void testDonnanDonnantAléatoire() {
-        StrategieDonnantDonnantAleatoire strategieDonnantDonnantAleatoire = new StrategieDonnantDonnantAleatoire();
-        List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieDonnantDonnantAleatoire.setSeed(1);
-
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,false,0));
-        assertFalse(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-
-        // ici la stratégie décide aléatoirement de trahir
-        historique.add(new PartieJouee(true,true,3));
-        assertFalse(strategieDonnantDonnantAleatoire.jouer(historique));
-    }*/
 
     @Test
     void testDonnanDonnantDeux() {
@@ -145,45 +92,6 @@ class StrategiesTest {
         historique.add(new PartieJouee(true,true,3));
         assertTrue(strategieDonnantDonnantDeux.jouer(historique));
     }
-
-    /*@Test
-    void testDonnanDonnantDeuxAléatoire() {
-        StrategieDonnantDonnantDeuxAleatoire strategieDonnantDonnantDeuxAleatoire = new StrategieDonnantDonnantDeuxAleatoire();
-        List<PartieJouee> historique = new ArrayList<>();
-        strategieDonnantDonnantDeuxAleatoire.setSeed(1);
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,false,0));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,false,3));
-        assertFalse(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        historique.add(new PartieJouee(true,true,3));
-        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-
-        // ici la stratégie décide aléatoirement de trahir
-        historique.add(new PartieJouee(true,true,3));
-        assertFalse(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-    }*/
 
 
     @Test

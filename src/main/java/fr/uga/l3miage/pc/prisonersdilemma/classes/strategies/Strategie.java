@@ -9,11 +9,13 @@ public abstract class Strategie {
 
     // utilisé par les stratégies qui utilisent de l'aléatoires
     SecureRandom random = new SecureRandom();
+    long seed;
 
     public abstract boolean jouer(List<PartieJouee> historique);
 
     // seed manuel pour les tests de stratégies aléatoires
     public void setSeed(long seed){
         random.setSeed(seed);
+        this.seed = seed;
     }
 }
