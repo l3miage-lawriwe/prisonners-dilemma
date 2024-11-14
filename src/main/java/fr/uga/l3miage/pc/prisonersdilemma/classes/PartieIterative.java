@@ -11,7 +11,7 @@ public class PartieIterative {
     // FALSE veut dire trahir
 
 
-    //les valeurs de résultat donnes dans le sujet
+    //les valeurs de résultat données dans le sujet
     public static final int TRAHIT = 5;
     public static final int DUPEE = 0;
     public static final int COOPERE = 3;
