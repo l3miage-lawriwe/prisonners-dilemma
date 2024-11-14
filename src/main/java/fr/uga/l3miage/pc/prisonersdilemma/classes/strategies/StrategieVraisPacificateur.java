@@ -15,7 +15,7 @@ public class StrategieVraisPacificateur extends Strategie {
             return true;
         } else {
             if(!(historique.get(tailleHist - 1).isChoixAutreJoueur()) && !(historique.get(tailleHist - 2).isChoixAutreJoueur())){
-                return this.random.nextInt(100) > 90;
+                return this.random.nextInt(100) < 10;
             } else {
                 return true;
             }

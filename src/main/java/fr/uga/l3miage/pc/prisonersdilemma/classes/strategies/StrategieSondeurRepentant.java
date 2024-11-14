@@ -13,14 +13,14 @@ public class StrategieSondeurRepentant extends Strategie {
 
         if(tailleHist < 2){
             strat = new StrategieSondeurNaif();
-            strat.setSeed(this.seed);
+            strat.setRandom(this.random);
         } else {
             // check si on a trahis puis l'autre joueur a trahis en réponse
             if(!(historique.get(tailleHist - 2).isChoixJoueur()) && !(historique.get(tailleHist - 1).isChoixAutreJoueur())){
                 strat = new StrategieToujoursCooperer();
             } else {
                 strat = new StrategieSondeurNaif();
-                strat.setSeed(this.seed);
+                strat.setRandom(this.random);
             }
         }
         return strat.jouer(historique);

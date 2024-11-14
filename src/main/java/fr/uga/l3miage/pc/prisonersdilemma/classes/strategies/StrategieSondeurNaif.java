@@ -10,7 +10,7 @@ public class StrategieSondeurNaif extends Strategie {
 
         Strategie strat;
 
-        if (this.random.nextInt(100) > 90){
+        if (this.random.nextInt(100) < 10){
             strat = new StrategieToujoursTrahir();
         } else {
             strat = new StrategieDonnantDonnant();

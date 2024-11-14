@@ -3,7 +3,9 @@ package fr.uga.l3miage.pc.prisonersdilemma;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.*;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,11 @@ class StrategiesAvecAleatoireTest {
     void testAléatoire(){
         StrategieAleatoire strategieAleatoire = new StrategieAleatoire();
         List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieAleatoire.setSeed(1);
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(0);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategieAleatoire.setRandom(mockedRandom);
 
         assertFalse(strategieAleatoire.jouer(historique));
 
@@ -28,8 +33,10 @@ class StrategiesAvecAleatoireTest {
     void testDonnanDonnantAléatoire() {
         StrategieDonnantDonnantAleatoire strategieDonnantDonnantAleatoire = new StrategieDonnantDonnantAleatoire();
         List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieDonnantDonnantAleatoire.setSeed(1);
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategieDonnantDonnantAleatoire.setRandom(mockedRandom);
 
         assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
 
@@ -39,13 +46,9 @@ class StrategiesAvecAleatoireTest {
         historique.add(new PartieJouee(true,false,0));
         assertFalse(strategieDonnantDonnantAleatoire.jouer(historique));
 
-
-        // pas de trahison aléatoire ici
-        for (int i = 0; i < 7; i++) {
-            historique.add(new PartieJouee(true,true,3));
-            assertTrue(strategieDonnantDonnantAleatoire.jouer(historique));
-        }
-
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategieDonnantDonnantAleatoire.setRandom(mockedRandom);
 
         // ici la stratégie décide aléatoirement de trahir
         historique.add(new PartieJouee(true,true,3));
@@ -57,7 +60,14 @@ class StrategiesAvecAleatoireTest {
     void testDonnanDonnantDeuxAléatoire() {
         StrategieDonnantDonnantDeuxAleatoire strategieDonnantDonnantDeuxAleatoire = new StrategieDonnantDonnantDeuxAleatoire();
         List<PartieJouee> historique = new ArrayList<>();
-        strategieDonnantDonnantDeuxAleatoire.setSeed(1);
+
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategieDonnantDonnantDeuxAleatoire.setRandom(mockedRandom);
+
+
         assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
 
 
@@ -71,10 +81,14 @@ class StrategiesAvecAleatoireTest {
         assertFalse(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
 
         // pas de trahison aléatoire ici
-        for (int i = 0; i < 6; i++) {
-            historique.add(new PartieJouee(true,true,3));
-            assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
-        }
+        historique.add(new PartieJouee(true,true,3));
+        assertTrue(strategieDonnantDonnantDeuxAleatoire.jouer(historique));
+
+
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategieDonnantDonnantDeuxAleatoire.setRandom(mockedRandom);
+
 
         // ici la stratégie décide aléatoirement de trahir
         historique.add(new PartieJouee(true,true,3));
@@ -85,8 +99,11 @@ class StrategiesAvecAleatoireTest {
     void testSondeurNaif(){
         StrategieSondeurNaif strategieSondeurNaif = new StrategieSondeurNaif();
         List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieSondeurNaif.setSeed(1);
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategieSondeurNaif.setRandom(mockedRandom);
 
         assertTrue(strategieSondeurNaif.jouer(historique));
 
@@ -97,10 +114,14 @@ class StrategiesAvecAleatoireTest {
         assertFalse(strategieSondeurNaif.jouer(historique));
 
         // pas de trahison aléatoire ici
-        for (int i = 0; i < 7; i++) {
-            historique.add(new PartieJouee(true,true,3));
-            assertTrue(strategieSondeurNaif.jouer(historique));
-        }
+
+        historique.add(new PartieJouee(true,true,3));
+        assertTrue(strategieSondeurNaif.jouer(historique));
+
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategieSondeurNaif.setRandom(mockedRandom);
+
 
         // ici la stratégie décide aléatoirement de trahir
         historique.add(new PartieJouee(true,true,3));
@@ -111,8 +132,12 @@ class StrategiesAvecAleatoireTest {
     void testSondeurRepentant(){
         StrategieSondeurRepentant strategieSondeurRepentant = new StrategieSondeurRepentant();
         List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieSondeurRepentant.setSeed(1);
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategieSondeurRepentant.setRandom(mockedRandom);
+
 
         assertTrue(strategieSondeurRepentant.jouer(historique));
 
@@ -123,10 +148,13 @@ class StrategiesAvecAleatoireTest {
         assertFalse(strategieSondeurRepentant.jouer(historique));
 
         // pas de trahison aléatoire ici
-        for (int i = 0; i < 5; i++) {
-            historique.add(new PartieJouee(true,true,3));
-            assertTrue(strategieSondeurRepentant.jouer(historique));
-        }
+        historique.add(new PartieJouee(true,true,3));
+        assertTrue(strategieSondeurRepentant.jouer(historique));
+
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategieSondeurRepentant.setRandom(mockedRandom);
+
 
         // ici la stratégie décide aléatoirement de trahir
         historique.add(new PartieJouee(true,true,3));
@@ -144,8 +172,12 @@ class StrategiesAvecAleatoireTest {
     void testPacificateurNaif() {
         StrategiePacificateurNaif strategiePacificateurNaif = new StrategiePacificateurNaif();
         List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategiePacificateurNaif.setSeed(1);
+
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategiePacificateurNaif.setRandom(mockedRandom);
 
         assertTrue(strategiePacificateurNaif.jouer(historique));
 
@@ -157,11 +189,12 @@ class StrategiesAvecAleatoireTest {
 
 
         // fonctionne comme donnant donnant ici
-        for (int i = 0; i < 7; i++) {
-            historique.add(new PartieJouee(false,false,0));
-            assertFalse(strategiePacificateurNaif.jouer(historique));
-        }
+        historique.add(new PartieJouee(false,false,0));
+        assertFalse(strategiePacificateurNaif.jouer(historique));
 
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategiePacificateurNaif.setRandom(mockedRandom);
 
         // ici la stratégie décide aléatoirement de faire la paix
         historique.add(new PartieJouee(false,false,0));
@@ -173,8 +206,12 @@ class StrategiesAvecAleatoireTest {
     void testVraisPacificateur() {
         StrategieVraisPacificateur strategieVraisPacificateur = new StrategieVraisPacificateur();
         List<PartieJouee> historique = new ArrayList<>();
-        // on seed le random pour avoir le même résultat a chaque fois
-        strategieVraisPacificateur.setSeed(1);
+
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategieVraisPacificateur.setRandom(mockedRandom);
 
         assertTrue(strategieVraisPacificateur.jouer(historique));
 
@@ -186,10 +223,12 @@ class StrategiesAvecAleatoireTest {
         assertTrue(strategieVraisPacificateur.jouer(historique));
 
 
-        for (int i = 0; i < 10; i++) {
-            historique.add(new PartieJouee(false,false,0));
-            assertFalse(strategieVraisPacificateur.jouer(historique));
-        }
+        historique.add(new PartieJouee(false,false,0));
+        assertFalse(strategieVraisPacificateur.jouer(historique));
+
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategieVraisPacificateur.setRandom(mockedRandom);
 
         // ici la stratégie décide aléatoirement de faire la paix
         historique.add(new PartieJouee(false,false,0));
@@ -200,7 +239,11 @@ class StrategiesAvecAleatoireTest {
     void testPavlovAleatoire() {
         StrategiePavlovAleatoire strategiePavlovAleatoire = new StrategiePavlovAleatoire();
         List<PartieJouee> historique = new ArrayList<>();
-        strategiePavlovAleatoire.setSeed(1);
+
+        SecureRandom mockedRandom = mock(SecureRandom.class);
+        when(mockedRandom.nextInt(anyInt())).thenReturn(90);
+        // on mock le random pour avoir le même résultat a chaque fois
+        strategiePavlovAleatoire.setRandom(mockedRandom);
 
         assertTrue(strategiePavlovAleatoire.jouer(historique));
 
@@ -214,10 +257,14 @@ class StrategiesAvecAleatoireTest {
         assertTrue(strategiePavlovAleatoire.jouer(historique));
 
         // fonctionnement standart
-        for (int i = 0; i < 6; i++) {
-            historique.add(new PartieJouee(true,true,3));
-            assertTrue(strategiePavlovAleatoire.jouer(historique));
-        }
+        historique.add(new PartieJouee(true,true,3));
+        assertTrue(strategiePavlovAleatoire.jouer(historique));
+
+
+
+        //change l'aleatoire
+        when(mockedRandom.nextInt(anyInt())).thenReturn(9);
+        strategiePavlovAleatoire.setRandom(mockedRandom);
 
         //trahison aléatoire
         historique.add(new PartieJouee(true,true,3));
