@@ -4,7 +4,7 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieDonnantDonnantSoupconneux extends Strategie {
+public class StrategieDonnantDonnantSoupconneux extends BaseStrategie {
     @Override
     public boolean jouer(List<PartieJouee> historique){
 

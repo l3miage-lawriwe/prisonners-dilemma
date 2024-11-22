@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class StrategieUtilisateur extends Strategie {
+public class StrategieUtilisateur extends BaseStrategie {
 
     private static final Logger log = LogManager.getLogger(StrategieUtilisateur.class);
 

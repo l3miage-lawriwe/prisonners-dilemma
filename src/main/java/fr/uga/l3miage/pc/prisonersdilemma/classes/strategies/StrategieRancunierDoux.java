@@ -5,7 +5,7 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieRancunierDoux extends Strategie {
+public class StrategieRancunierDoux extends BaseStrategie {
     // note : sequence représente une suite de coup prédéfinie que la stratégie vas éffectuer
     ArrayList<Boolean> sequence = new ArrayList<>();
 

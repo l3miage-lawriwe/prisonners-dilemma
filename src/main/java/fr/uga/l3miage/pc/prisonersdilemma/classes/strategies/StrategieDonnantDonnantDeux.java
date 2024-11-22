@@ -4,7 +4,7 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieDonnantDonnantDeux extends Strategie {
+public class StrategieDonnantDonnantDeux extends BaseStrategie {
 
     // on assume que la strategie est naive (commence par coopération)
     @Override

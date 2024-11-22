@@ -4,7 +4,7 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieVraisPacificateur extends Strategie {
+public class StrategieVraisPacificateur extends BaseStrategieAleatoire {
 
     // on assume que la strategie est naive (commence par coopération)
     @Override

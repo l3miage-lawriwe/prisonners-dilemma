@@ -56,8 +56,8 @@ public class PartieIterative {
     public void jouerIteration(){
 
         // les joueurs jouent
-        boolean choixJoueur1 = joueur1.jouer();
-        boolean choixJoueur2 = joueur2.jouer();
+        boolean choixJoueur1 = joueur1.jouer(false);
+        boolean choixJoueur2 = joueur2.jouer(false);
 
         // calcul des résultats
         int resultatJoueur1;

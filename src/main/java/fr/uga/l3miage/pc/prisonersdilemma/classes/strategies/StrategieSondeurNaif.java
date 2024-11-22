@@ -4,11 +4,11 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieSondeurNaif extends Strategie {
+public class StrategieSondeurNaif extends BaseStrategieAleatoire {
     @Override
     public boolean jouer(List<PartieJouee> historique){
 
-        Strategie strat;
+        BaseStrategie strat;
 
         if (this.random.nextInt(100) < 10){
             strat = new StrategieToujoursTrahir();

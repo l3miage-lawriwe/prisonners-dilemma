@@ -6,7 +6,7 @@ public class StrategieFactory {
 
     private StrategieFactory() {}
 
-    public static Strategie  createStrategie(int nbStrategie) {
+    public static BaseStrategie createStrategie(int nbStrategie) {
         switch (nbStrategie) {
             case 1 -> {
                 return new StrategieAdaptatif();

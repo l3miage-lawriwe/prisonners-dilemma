@@ -28,6 +28,6 @@ class JoueurTest {
     @Test
     void testJouer() {
         Joueur joueur = new Joueur(1);
-        assertTrue(joueur.jouer());
+        assertTrue(joueur.jouer(false));
     }
 }

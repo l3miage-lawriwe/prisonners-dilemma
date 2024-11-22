@@ -19,13 +19,13 @@ public class Joueur {
     // decide si l'IA ou l'utilisateur joue
 
     // l'IA de decision si il n'y a pas d'utilisateur en controle
-    private Strategie strategie;
+    private BaseStrategie baseStrategie;
 
     // historique, sert a l'IA pour décider
     private final List<PartieJouee> historique = new ArrayList<>();
 
     public Joueur(int strategie) {
-        this.strategie = StrategieFactory.createStrategie(strategie);
+        this.baseStrategie = StrategieFactory.createStrategie(strategie);
     }
 
     public Joueur() {
@@ -33,8 +33,17 @@ public class Joueur {
     }
 
     // le joueur joue sont coup, si utilisateur, utilise console de commande, sinon on lance l'IA
-    public boolean jouer(){
-        return strategie.jouer(historique);
+    // le boolean "strategieAlternative" sert a savoir si on veut utiliser le package de strategie du groupe 1_6
+    public boolean jouer(boolean strategieAlternative){
+        if (strategieAlternative){
+            return baseStrategie.jouer(historique);
+        } else {
+
+            /*
+                    ICI : ADAPTATEUR POUR STRATEGIES DU GROUPE 1_6
+            */
+            return false;
+        }
 
     }
 
@@ -58,7 +67,7 @@ public class Joueur {
 
         int numeroStrategie = reader.nextInt();
 
-        strategie = StrategieFactory.createStrategie(numeroStrategie);
+        baseStrategie = StrategieFactory.createStrategie(numeroStrategie);
         /*
          *
          *  ICI on change la strategie affectee selon l'INT que l'utilisateur rentre
