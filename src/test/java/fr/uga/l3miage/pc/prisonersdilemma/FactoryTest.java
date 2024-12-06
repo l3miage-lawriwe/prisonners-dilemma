@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FactoryTest {
 
     @Test
-    void testScoreTotal() {
+    void testFactoryTotal() {
 
         BaseStrategie baseStrategie = StrategieFactory.createStrategie(0);
         assertThat(baseStrategie).isExactlyInstanceOf(StrategieUtilisateur.class);
