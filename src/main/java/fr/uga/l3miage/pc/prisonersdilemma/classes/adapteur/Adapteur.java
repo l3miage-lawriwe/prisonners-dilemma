@@ -1,6 +1,7 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
+
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.models.Strategie;
 

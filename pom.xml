@@ -28,6 +28,18 @@
     </properties>
 
     <dependencies>
+
+
+
+        <dependency>
+        <groupId>com.pc-project</groupId>
+        <artifactId>pc-project</artifactId>
+        <version>1.0</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/pc-project.jar</systemPath>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
