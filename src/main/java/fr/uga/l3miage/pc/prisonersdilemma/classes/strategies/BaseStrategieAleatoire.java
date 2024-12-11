@@ -3,7 +3,7 @@ package fr.uga.l3miage.pc.prisonersdilemma.classes.strategies;
 
 import java.security.SecureRandom;
 
-public abstract class BaseStrategieAleatoire extends BaseStrategie {
+public abstract class BaseStrategieAleatoire implements BaseStrategie {
 
 
     // utilisé par les stratégies qui utilisent de l'aléatoire

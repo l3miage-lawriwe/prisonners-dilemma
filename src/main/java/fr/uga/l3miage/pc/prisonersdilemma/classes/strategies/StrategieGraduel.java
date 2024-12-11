@@ -5,7 +5,7 @@ import java.util.List;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategieGraduel extends BaseStrategie {
+public class StrategieGraduel implements BaseStrategie {
     // note : sequence représente une suite de coup prédéfinie que la stratégie vas éffectuer
     ArrayList<Boolean> sequence = new ArrayList<>();
     @Override

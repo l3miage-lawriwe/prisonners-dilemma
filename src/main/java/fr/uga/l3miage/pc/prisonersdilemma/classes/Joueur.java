@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//import fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur.Adapteur;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur.Adapteur;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.strategies.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,14 +22,14 @@ public class Joueur {
     // l'IA de decision si il n'y a pas d'utilisateur en controle
     private BaseStrategie baseStrategie;
 
-    //private Adapteur adapteur = new Adapteur();
+    private Adapteur adapteur = new Adapteur();
 
     // historique, sert a l'IA pour décider
     private final List<PartieJouee> historique = new ArrayList<>();
 
     public Joueur(int strategie) {
         this.baseStrategie = StrategieFactory.createStrategie(strategie);
-        //this.adapteur.setStrategie(strategie);
+        this.adapteur.setStrategie(strategie);
     }
 
     public Joueur() {
@@ -44,8 +44,7 @@ public class Joueur {
         } else {
 
             // faire appel a la classe adaptateur
-            //return adapteur.jouerStrategiesAdapteur(historique);
-            return false;
+            return adapteur.jouerStrategiesAdapteur(historique);
         }
 
     }
@@ -77,7 +76,7 @@ public class Joueur {
     }
 
     private void changerstrategies(int numeroStrategie){
-        //adapteur.setStrategie(numeroStrategie);
+        adapteur.setStrategie(numeroStrategie);
         baseStrategie = StrategieFactory.createStrategie(numeroStrategie);
     }
 

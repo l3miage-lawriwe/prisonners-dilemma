@@ -5,7 +5,7 @@ import java.util.List;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieIterative;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
-public class StrategiePavlov extends BaseStrategie {
+public class StrategiePavlov implements BaseStrategie {
     @Override
     public boolean jouer(List<PartieJouee> historique){
         if(historique.isEmpty()){
