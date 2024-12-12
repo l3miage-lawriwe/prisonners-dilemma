@@ -1,6 +1,13 @@
 
-b	java:S112]"FDefine and throw a dedicated exception instead of using a generic one.(’â–8£Ğ¡¾»2
+b	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(‚Ö—8É²àÕ»2
+c	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(²¸8ê«Ö»2
 g
-java:S1192'"JDefine a constant instead of duplicating this literal "coopÃ©rer" 5 times.(³¨œ8¤Ğ¡¾»2
+java:S11924"JDefine a constant instead of duplicating this literal "coopÃ©rer" 9 times.(›ÙÅ»8ÔûíÔ»2
 d
-java:S1192'"GDefine a constant instead of duplicating this literal "trahir" 3 times.(³¨œ8¤Ğ¡¾»2
+java:S11924"GDefine a constant instead of duplicating this literal "trahir" 8 times.(›ÙÅ»8ÔûíÔ»2
+t
+java:S1450"RRemove the "bot" field and declare it as a local variable in the relevant methods.(«¥Éûüÿÿÿÿ8ŒÅ¿Ö»2
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8±Å¿Ö»2
+R
+java:S1068"0Remove this unused "objectMapper" private field.(­ãĞåüÿÿÿÿ8¸âºÕ»2

@@ -8,6 +8,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,50 +71,55 @@ public class WebSocketHandler extends TextWebSocketHandler {
         partie = null; // Réinitialiser la partie si un joueur quitte
     }
 
-    private void startGame() throws Exception {
-        Joueur joueur1 = new Joueur();
-        Joueur joueur2 = new Joueur();
-        partie = new PartieIterative(joueur1, joueur2, 10);
+        private void startGame() throws BroadcastException {
+            Joueur joueur1 = new Joueur();
+            Joueur joueur2 = new Joueur();
+            partie = new PartieIterative(joueur1, joueur2, 10);
 
-        broadcast("La partie commence ! Faites vos choix : 'coopérer' ou 'trahir'.");
-    }
-
-    private void processTurn() throws Exception {
-        String[] playerIds = players.keySet().toArray(new String[0]);
-        boolean choixJoueur1 = playerChoices.get(playerIds[0]);
-        boolean choixJoueur2 = playerChoices.get(playerIds[1]);
-
-        // Jouer une itération
-        PartieJouee resultat = partie.jouerIteration(choixJoueur1, choixJoueur2);
-
-        // Envoyer les résultats aux joueurs
-        players.get(playerIds[0]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
-        players.get(playerIds[0]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
-        players.get(playerIds[0]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
-
-        players.get(playerIds[1]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
-        players.get(playerIds[1]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
-        players.get(playerIds[1]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
-
-        sendHistoriqueUpdate(players.get(playerIds[0]), partie.getJoueur1(), partie.getIterationActuelle());
-        sendHistoriqueUpdate(players.get(playerIds[1]), partie.getJoueur2(), partie.getIterationActuelle());
-
-        // Réinitialiser les choix des joueurs
-        playerChoices.clear();
-
-        // Vérifier si la partie est terminée
-        if (partie.estTerminee()) {
-            broadcast("La partie est terminée !");
-            broadcast("Score Joueur 1 : " + partie.getScoreJoueur1());
-            broadcast("Score Joueur 2 : " + partie.getScoreJoueur2());
-            partie = null; // Réinitialiser la partie
-        } else {
-            broadcast("Itération " + partie.getIterationActuelle() + "/" + partie.getNbIterations() + " terminée. Faites vos prochains choix !");
+            broadcast("La partie commence ! Faites vos choix : 'coopérer' ou 'trahir'.");
         }
-    }
 
-    private void sendHistoriqueUpdate(WebSocketSession session, Joueur joueur, int tour) throws Exception {
-        PartieJouee dernierePartie = joueur.getHistorique().get(joueur.getHistorique().size() - 1);
+        private void processTurn() throws EnvoiMessageException,BroadcastException {
+            String[] playerIds = players.keySet().toArray(new String[0]);
+            boolean choixJoueur1 = playerChoices.get(playerIds[0]);
+            boolean choixJoueur2 = playerChoices.get(playerIds[1]);
+
+            // Jouer une itération
+            PartieJouee resultat = partie.jouerIteration(choixJoueur1, choixJoueur2);
+
+            // Envoyer les résultats aux joueurs
+            try {
+                players.get(playerIds[0]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
+                players.get(playerIds[0]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
+                players.get(playerIds[0]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
+
+                players.get(playerIds[1]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
+                players.get(playerIds[1]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
+                players.get(playerIds[1]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
+            } catch (Exception e) {
+                throw new EnvoiMessageException("Erreur d'envoi de résultat");
+            }
+
+
+            sendHistoriqueUpdate(players.get(playerIds[0]), partie.getJoueur1(), partie.getIterationActuelle());
+            sendHistoriqueUpdate(players.get(playerIds[1]), partie.getJoueur2(), partie.getIterationActuelle());
+
+            // Réinitialiser les choix des joueurs
+            playerChoices.clear();
+
+            // Vérifier si la partie est terminée
+            if (partie.estTerminee()) {
+                broadcast("La partie est terminée !");
+                broadcast("Score Joueur 1 : " + partie.getScoreJoueur1());
+                broadcast("Score Joueur 2 : " + partie.getScoreJoueur2());
+                partie = null; // Réinitialiser la partie
+            } else {
+                broadcast("Itération " + partie.getIterationActuelle() + "/" + partie.getNbIterations() + " terminée. Faites vos prochains choix !");
+            }
+        }
+
+    private void sendHistoriqueUpdate(WebSocketSession session, Joueur joueur, int tour) throws EnvoiMessageException {
+        PartieJouee dernierePartie = joueur.getHistorique().getLast();
 
         String updateMessage = String.format(
                 "HISTORIQUE:%d,%s,%s",
@@ -122,14 +128,22 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 dernierePartie.isChoixAutreJoueur() ? COOPERER : TRAHIR
         );
 
-        session.sendMessage(new TextMessage(updateMessage));
+        try {
+            session.sendMessage(new TextMessage(updateMessage));
+        } catch (Exception e) {
+            throw new EnvoiMessageException("Erreur d'envoi d'historique: " + updateMessage, e);
+        }
     }
 
 
 
-    private void broadcast(String message) throws Exception {
-        for (WebSocketSession session : players.values()) {
-            session.sendMessage(new TextMessage(message));
+    private void broadcast(String message) throws BroadcastException {
+        try {
+            for (WebSocketSession session : players.values()) {
+                session.sendMessage(new TextMessage(message));
+            }
+        } catch (Exception e) {
+            throw new BroadcastException("Erreur d'envoi de message: " + message, e);
         }
     }
 
