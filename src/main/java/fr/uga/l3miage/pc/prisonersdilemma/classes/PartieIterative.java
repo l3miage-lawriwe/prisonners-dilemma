@@ -1,107 +1,102 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class PartieIterative {
 
-
-    // pour chaque choix :
-    // TRUE veut dire coopérer
-    // FALSE veut dire trahir
-
-
-    //les valeurs de résultat données dans le sujet
+    // Résultats possibles des choix des joueurs
     public static final int TRAHIT = 5;
     public static final int DUPEE = 0;
     public static final int COOPERE = 3;
     public static final int PIEGEE = 1;
-    private static final Logger log = LogManager.getLogger(PartieIterative.class);
-
 
     private final Joueur joueur1;
     private final Joueur joueur2;
-
     private final int nbIterations;
+    private int iterationActuelle;
+    private final List<PartieJouee> historiqueParties;
 
-
-    public PartieIterative(int nbIterations) {
-        this.joueur1 = new Joueur();
-        this.joueur2 = new Joueur();
+    public PartieIterative(Joueur joueur1, Joueur joueur2, int nbIterations) {
+        this.joueur1 = joueur1;
+        this.joueur2 = joueur2;
         this.nbIterations = nbIterations;
+        this.iterationActuelle = 0;
+        this.historiqueParties = new ArrayList<>();
     }
 
-    public PartieIterative(int stratJoueur1, int stratJoueur2,int nbIterations) {
-        this.joueur1 = new Joueur(stratJoueur1);
-        this.joueur2 = new Joueur(stratJoueur2);
-        this.nbIterations = nbIterations;
-    }
+    // Méthode pour jouer une itération et retourner les résultats
+    public PartieJouee jouerIteration(boolean choixJoueur1, boolean choixJoueur2) {
+        iterationActuelle++;
 
-    // méthode pour jouer un partie complète
-    public Joueur jouerPartie() {
-        for (int iteration = 0; iteration < nbIterations; iteration++) {
-            jouerIteration();
-        }
-        afficherScores(nbIterations);
-
-        if(joueur1.scoreTotal() > joueur2.scoreTotal()) {
-            return joueur1;
-        } else if(joueur2.scoreTotal() > joueur1.scoreTotal()) {
-            return joueur2;
-        } else {
-            return null;
-        }
-    }
-
-    public void jouerIteration(){
-
-        // les joueurs jouent
-        boolean choixJoueur1 = joueur1.jouer(false);
-        boolean choixJoueur2 = joueur2.jouer(false);
-
-        // calcul des résultats
+        // Calcul des résultats
         int resultatJoueur1;
         int resultatJoueur2;
         if (choixJoueur1) {
-            log.info("joueur 1 a coopéré");
             if (choixJoueur2) {
-                log.info("joueur 2 a coopéré");
                 resultatJoueur1 = COOPERE;
                 resultatJoueur2 = COOPERE;
             } else {
-                log.info("joueur 2 a trahis");
                 resultatJoueur1 = DUPEE;
                 resultatJoueur2 = TRAHIT;
             }
         } else {
-            log.info("joueur 1 a trahis");
             if (choixJoueur2) {
-                log.info("joueur 2 a coopéré");
                 resultatJoueur1 = TRAHIT;
                 resultatJoueur2 = DUPEE;
-
             } else {
-                log.info("joueur 2 a trahis");
                 resultatJoueur1 = PIEGEE;
                 resultatJoueur2 = PIEGEE;
-
             }
         }
 
-        // affichage des resultats
-        log.info("joueur 1 a gagné : {}", resultatJoueur1);
-        log.info("joueur 2 a gagné : {}", resultatJoueur2);
+        // Création de l'instance de PartieJouee
+        PartieJouee partieJouee = new PartieJouee(choixJoueur1, choixJoueur2, resultatJoueur1);
 
+        // Mise à jour de l'historique
+        joueur1.aJouterPartieHistorique(partieJouee);
+        joueur2.aJouterPartieHistorique(new PartieJouee(choixJoueur2, choixJoueur1, resultatJoueur2));
+        historiqueParties.add(partieJouee);
 
-        // ajout des parties a l'historique pour les IA
-        joueur1.aJouterPartieHistorique(new PartieJouee(choixJoueur1,choixJoueur2,resultatJoueur1));
-        joueur2.aJouterPartieHistorique(new PartieJouee(choixJoueur2,choixJoueur1,resultatJoueur2));
-
+        return partieJouee;
     }
 
-    public void afficherScores(int iterations){
-        log.info("la partie a durée {} itérations", iterations);
-        log.info("joueur 1 a un score de : {}", joueur1.scoreTotal());
-        log.info("joueur 2 a un score de : {}", joueur2.scoreTotal());
+    public boolean estTerminee() {
+        return iterationActuelle >= nbIterations;
+    }
+
+    public int getScoreJoueur1() {
+        return joueur1.scoreTotal();
+    }
+
+    public int getScoreJoueur2() {
+        return joueur2.scoreTotal();
+    }
+
+    public int getNbIterations() {
+        return nbIterations;
+    }
+
+    public int getIterationActuelle() {
+        return iterationActuelle;
+    }
+    public Map<String, List<PartieJouee>> getJoueursHistorique() {
+        return Map.of(
+                "Joueur 1", joueur1.getHistorique(),
+                "Joueur 2", joueur2.getHistorique()
+        );
+    }
+
+    public List<PartieJouee> getHistoriqueParties() {
+        return new ArrayList<>(historiqueParties);
+    }
+
+    public Joueur getJoueur2() {
+        return joueur2;
+    }
+
+    public Joueur getJoueur1() {
+        return joueur1;
     }
 }

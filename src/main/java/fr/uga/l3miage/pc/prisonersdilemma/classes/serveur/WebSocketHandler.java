@@ -1,78 +1,133 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes.serveur;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.Joueur;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieIterative;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(WebSocketHandler.class);
-    private final List<WebSocketSession> joueurs = new ArrayList<>();
-    private final Map<WebSocketSession, Integer> strategieJoueurs = new HashMap<>();
+    private final Map<String, WebSocketSession> players = new HashMap<>();
+    private final Map<String, Boolean> playerChoices = new HashMap<>();
+    private PartieIterative partie;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
-        joueurs.add(session);
-        log.info("Nouveau joueur connecté : {}", session.getRemoteAddress());
-        session.sendMessage(new TextMessage("Veuillez choisir votre stratégie : "));
-
-
-    }
-
-    @Override
-    public void afterConnectionClosed(@NonNull WebSocketSession session,@NonNull CloseStatus status)  {
-        joueurs.remove(session);
-        log.info("Joueur déconnecté : {}", session.getRemoteAddress());
-    }
-
-
-
-    @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) {
-        log.error("Erreur de communication : {}", exception.getMessage());
-        if (session.isOpen()) {
-            try {
-                session.close();
-            } catch (IOException e) {
-                log.error("Erreur de fermeture de session: {}", e.getMessage(), e);
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        if (players.size() < 2) {
+            players.put(session.getId(), session);
+            session.sendMessage(new TextMessage("Connecté en tant que joueur " + (players.size())));
+            if (players.size() == 2) {
+                startGame();
+            } else {
+                session.sendMessage(new TextMessage("En attente d'un autre joueur..."));
             }
+        } else {
+            session.sendMessage(new TextMessage("La partie est pleine."));
+            session.close();
         }
     }
+
     @Override
-    protected void handleTextMessage(@NonNull WebSocketSession session, TextMessage message) throws Exception {
-        try {
-            int nbStrat = Integer.parseInt(message.getPayload());
-            strategieJoueurs.put(session, nbStrat);
-            log.info("Stratégie : {} selectionné par le joueur :  {}",  nbStrat,session.getRemoteAddress());
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        if (partie == null || partie.estTerminee()) {
+            session.sendMessage(new TextMessage("La partie est terminée ou non initialisée."));
+            return;
+        }
 
-            if (strategieJoueurs.size() == 2) {
-                int strategieJ1 = strategieJoueurs.get(joueurs.get(0));
-                int strategieJ2 = strategieJoueurs.get(joueurs.get(1));
+        String sessionId = session.getId();
+        String payload = message.getPayload().trim().toLowerCase();
 
-                PartieIterative partie = new PartieIterative(strategieJ1,strategieJ2,3);
-                partie.jouerPartie();
+        // Valider l'entrée du joueur
+        if (!payload.equals("coopérer") && !payload.equals("trahir")) {
+            session.sendMessage(new TextMessage("Choix invalide. Veuillez choisir 'coopérer' ou 'trahir'."));
+            return;
+        }
 
-                strategieJoueurs.clear();
-                for (WebSocketSession joueur : joueurs) {
-                    joueur.sendMessage(new TextMessage("Veuillez choisir votre stratégie pour la prochaine partie : "));
-                }
-            }
-        } catch (NumberFormatException e) {
-            log.warn("Mauvaise valeur : {}", message.getPayload());
+        boolean choix = payload.equals("coopérer");
+        playerChoices.put(sessionId, choix);
+        session.sendMessage(new TextMessage("Votre choix : " + (choix ? "coopérer" : "trahir")));
+
+        // Vérifier si les deux joueurs ont joué
+        if (playerChoices.size() == 2) {
+            processTurn();
         }
     }
-    public List<WebSocketSession> getJoueurs() {
-        return joueurs;
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        players.remove(session.getId());
+        playerChoices.remove(session.getId());
+        broadcast("Un joueur s'est déconnecté. La partie est annulée.");
+        partie = null; // Réinitialiser la partie si un joueur quitte
+    }
+
+    private void startGame() throws Exception {
+        Joueur joueur1 = new Joueur();
+        Joueur joueur2 = new Joueur();
+        partie = new PartieIterative(joueur1, joueur2, 10);
+
+        broadcast("La partie commence ! Faites vos choix : 'coopérer' ou 'trahir'.");
+    }
+
+    private void processTurn() throws Exception {
+        String[] playerIds = players.keySet().toArray(new String[0]);
+        boolean choixJoueur1 = playerChoices.get(playerIds[0]);
+        boolean choixJoueur2 = playerChoices.get(playerIds[1]);
+
+        // Jouer une itération
+        PartieJouee resultat = partie.jouerIteration(choixJoueur1, choixJoueur2);
+
+        // Envoyer les résultats aux joueurs
+        players.get(playerIds[0]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur1 ? "coopérer" : "trahir")));
+        players.get(playerIds[0]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur2 ? "coopérer" : "trahir")));
+        players.get(playerIds[0]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
+
+        players.get(playerIds[1]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur2 ? "coopérer" : "trahir")));
+        players.get(playerIds[1]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur1 ? "coopérer" : "trahir")));
+        players.get(playerIds[1]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
+
+        sendHistoriqueUpdate(players.get(playerIds[0]), partie.getJoueur1(), partie.getIterationActuelle());
+        sendHistoriqueUpdate(players.get(playerIds[1]), partie.getJoueur2(), partie.getIterationActuelle());
+
+        // Réinitialiser les choix des joueurs
+        playerChoices.clear();
+
+        // Vérifier si la partie est terminée
+        if (partie.estTerminee()) {
+            broadcast("La partie est terminée !");
+            broadcast("Score Joueur 1 : " + partie.getScoreJoueur1());
+            broadcast("Score Joueur 2 : " + partie.getScoreJoueur2());
+            partie = null; // Réinitialiser la partie
+        } else {
+            broadcast("Itération " + partie.getIterationActuelle() + "/" + partie.getNbIterations() + " terminée. Faites vos prochains choix !");
+        }
+    }
+
+    private void sendHistoriqueUpdate(WebSocketSession session, Joueur joueur, int tour) throws Exception {
+        PartieJouee dernierePartie = joueur.getHistorique().get(joueur.getHistorique().size() - 1);
+
+        String updateMessage = String.format(
+                "HISTORIQUE:%d,%s,%s",
+                tour,
+                dernierePartie.isChoixJoueur() ? "coopérer" : "trahir",
+                dernierePartie.isChoixAutreJoueur() ? "coopérer" : "trahir"
+        );
+
+        session.sendMessage(new TextMessage(updateMessage));
+    }
+
+
+    private void broadcast(String message) throws Exception {
+        for (WebSocketSession session : players.values()) {
+            session.sendMessage(new TextMessage(message));
+        }
     }
 }

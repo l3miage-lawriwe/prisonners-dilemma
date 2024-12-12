@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu du Prisonnier</title>
+    <style>
+        body {
+            background-color: #f0e130; /* Jaune Dalton */
+            color: #000000; /* Noir */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #000000; /* Noir */
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 2px 2px #f0e130; /* Ombre jaune */
+        }
+
+        #status {
+            color: #000000; /* Noir */
+            font-weight: bold;
+            text-align: center;
+        }
+
+        button {
+            background-color: #000000; /* Noir */
+            color: #f0e130; /* Jaune */
+            border: 2px solid #f0e130; /* Contour jaune */
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #f0e130; /* Jaune */
+            color: #000000; /* Noir */
+            transform: scale(1.1); /* Zoom léger */
+        }
+
+        button:disabled {
+            background-color: #777777; /* Gris */
+            color: #ffffff; /* Blanc */
+            cursor: not-allowed;
+        }
+
+        #messages {
+            background-color: #000000; /* Fond noir */
+            color: #f0e130; /* Texte jaune */
+            border: 2px solid #f0e130;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px auto;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        h2 {
+            color: #000000; /* Noir */
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #000000;
+            color: #f0e130;
+        }
+
+        th, td {
+            border: 2px solid #f0e130;
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            text-transform: uppercase;
+        }
+
+        .container {
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Jeu du Prisonnier</h1>
+    <p id="status">Statut : Non connecté</p>
+    <button id="connectButton" onclick="connect()">Se connecter</button>
+    <button id="coopButton" onclick="sendChoice('coopérer')" disabled>Coopérer</button>
+    <button id="betrayButton" onclick="sendChoice('trahir')" disabled>Trahir</button>
+    <h2>Messages :</h2>
+    <div id="messages"></div>
+    <h2>Historique des tours :</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Tour</th>
+            <th>Joueur 1</th>
+            <th>Joueur 2</th>
+        </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+    </table>
+</div>
+
+<script>
+    let socket;
+    let isBothPlayersConnected = false;
+
+    function connect() {
+        console.log("Tentative de connexion au WebSocket...");
+        socket = new WebSocket("ws://134.209.234.93/game");
+
+        socket.onopen = () => {
+            console.log("Connecté au serveur !");
+            document.getElementById("status").innerText = "Connecté au serveur WebSocket.";
+            document.getElementById("connectButton").disabled = true;
+        };
+
+        socket.onmessage = (event) => {
+            const message = event.data;
+
+            if (message.includes("La partie commence")) {
+                isBothPlayersConnected = true;
+                document.getElementById("coopButton").disabled = false;
+                document.getElementById("betrayButton").disabled = false;
+            }
+
+            if (message.startsWith("HISTORIQUE:")) {
+                const historiqueData = JSON.parse(message.replace("HISTORIQUE:", ""));
+                updateHistoryTable(historiqueData);
+            } else {
+                const messages = document.getElementById("messages");
+                messages.innerText += message + "\n";
+            }
+        };
+
+        socket.onclose = (event) => {
+            console.log("Déconnecté du serveur.");
+            document.getElementById("status").innerText = "Déconnecté du serveur WebSocket.";
+            document.getElementById("connectButton").disabled = false;
+            document.getElementById("coopButton").disabled = true;
+            document.getElementById("betrayButton").disabled = true;
+            isBothPlayersConnected = false;
+        };
+
+        socket.onerror = (error) => {
+            console.error("Erreur WebSocket : ", error);
+        };
+    }
+
+    function sendChoice(choice) {
+        if (isBothPlayersConnected) {
+            console.log("Tentative d'envoi du choix :", choice);
+            socket.send(choice);
+        } else {
+            alert("En attente de l'autre joueur...");
+        }
+    }
+
+    function updateHistoryTable(historique) {
+        const tableBody = document.getElementById("historyTable");
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${historique.tour}</td>
+            <td>${historique.joueur1}</td>
+            <td>${historique.joueur2}</td>
+        `;
+
+        tableBody.appendChild(row);
+    }
+</script>
+</body>
+</html>

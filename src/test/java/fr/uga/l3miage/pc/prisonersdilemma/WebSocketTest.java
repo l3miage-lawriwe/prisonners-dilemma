@@ -34,7 +34,7 @@ class WebSocketTest {
 
         ArgumentCaptor<TextMessage> messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
         verify(mockSession).sendMessage(messageCaptor.capture());
-        assertEquals("Veuillez choisir votre stratégie : ", messageCaptor.getValue().getPayload());
+        assertEquals("{\"message\":\"Veuillez choisir votre stratégie :\"}", messageCaptor.getValue().getPayload());
     }
 
     @Test
