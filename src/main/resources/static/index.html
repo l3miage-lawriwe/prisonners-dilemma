@@ -14,22 +14,22 @@
         }
 
         h1 {
-            color: #000000; /* Noir */
+            color: #000000;
             text-align: center;
             text-transform: uppercase;
-            text-shadow: 2px 2px #f0e130; /* Ombre jaune */
+            text-shadow: 2px 2px #f0e130;
         }
 
         #status {
-            color: #000000; /* Noir */
+            color: #000000;
             font-weight: bold;
             text-align: center;
         }
 
         button {
-            background-color: #000000; /* Noir */
-            color: #f0e130; /* Jaune */
-            border: 2px solid #f0e130; /* Contour jaune */
+            background-color: #000000;
+            color: #f0e130;
+            border: 2px solid #f0e130;
             border-radius: 5px;
             padding: 10px 20px;
             font-size: 16px;
@@ -39,20 +39,20 @@
         }
 
         button:hover {
-            background-color: #f0e130; /* Jaune */
-            color: #000000; /* Noir */
-            transform: scale(1.1); /* Zoom léger */
+            background-color: #f0e130;
+            color: #000000;
+            transform: scale(1.1);
         }
 
         button:disabled {
-            background-color: #777777; /* Gris */
-            color: #ffffff; /* Blanc */
+            background-color: #777777;
+            color: #ffffff;
             cursor: not-allowed;
         }
 
-        #messages {
-            background-color: #000000; /* Fond noir */
-            color: #f0e130; /* Texte jaune */
+        #messages, #history {
+            background-color: #000000;
+            color: #f0e130;
             border: 2px solid #f0e130;
             border-radius: 5px;
             padding: 10px;
@@ -63,7 +63,7 @@
         }
 
         h2 {
-            color: #000000; /* Noir */
+            color: #000000;
             text-transform: uppercase;
             text-align: center;
             margin-top: 20px;
@@ -121,7 +121,7 @@
 
     function connect() {
         console.log("Tentative de connexion au WebSocket...");
-        socket = new WebSocket("ws://134.209.234.93/game");
+        socket = new WebSocket("ws://134.209.234.93:8080/game");
 
         socket.onopen = () => {
             console.log("Connecté au serveur !");
@@ -139,15 +139,15 @@
             }
 
             if (message.startsWith("HISTORIQUE:")) {
-                const historiqueData = JSON.parse(message.replace("HISTORIQUE:", ""));
-                updateHistoryTable(historiqueData);
+                const [tour, joueur1, joueur2] = message.replace("HISTORIQUE:", "").split(",");
+                addRowToHistory(tour, joueur1, joueur2);
             } else {
-                const messages = document.getElementById("messages");
-                messages.innerText += message + "\n";
+                const messagesDiv = document.getElementById("messages");
+                messagesDiv.innerText += message + "\n";
             }
         };
 
-        socket.onclose = (event) => {
+        socket.onclose = () => {
             console.log("Déconnecté du serveur.");
             document.getElementById("status").innerText = "Déconnecté du serveur WebSocket.";
             document.getElementById("connectButton").disabled = false;
@@ -163,23 +163,21 @@
 
     function sendChoice(choice) {
         if (isBothPlayersConnected) {
-            console.log("Tentative d'envoi du choix :", choice);
+            console.log("Envoi du choix :", choice);
             socket.send(choice);
         } else {
             alert("En attente de l'autre joueur...");
         }
     }
 
-    function updateHistoryTable(historique) {
+    function addRowToHistory(tour, joueur1, joueur2) {
         const tableBody = document.getElementById("historyTable");
         const row = document.createElement("tr");
-
         row.innerHTML = `
-            <td>${historique.tour}</td>
-            <td>${historique.joueur1}</td>
-            <td>${historique.joueur2}</td>
+            <td>${tour}</td>
+            <td>${joueur1}</td>
+            <td>${joueur2}</td>
         `;
-
         tableBody.appendChild(row);
     }
 </script>

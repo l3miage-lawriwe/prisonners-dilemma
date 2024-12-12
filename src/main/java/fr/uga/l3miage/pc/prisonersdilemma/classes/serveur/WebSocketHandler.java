@@ -10,6 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WebSocketHandler extends TextWebSocketHandler {
@@ -36,7 +37,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         if (partie == null || partie.estTerminee()) {
             session.sendMessage(new TextMessage("La partie est terminée ou non initialisée."));
             return;
@@ -125,9 +126,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
 
+
     private void broadcast(String message) throws Exception {
         for (WebSocketSession session : players.values()) {
             session.sendMessage(new TextMessage(message));
         }
+    }
+
+    public Map<String, WebSocketSession> getPlayers() {
+        return players;
     }
 }
