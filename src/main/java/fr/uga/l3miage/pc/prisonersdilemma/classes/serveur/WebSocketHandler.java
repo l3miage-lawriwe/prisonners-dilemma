@@ -54,7 +54,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
         boolean choix = payload.equals(COOPERER);
         playerChoices.put(sessionId, choix);
-        session.sendMessage(new TextMessage("Votre choix : " + (choix ? "coopérer" : "trahir")));
+        session.sendMessage(new TextMessage("Votre choix : " + (choix ? COOPERER : TRAHIR)));
 
         // Vérifier si les deux joueurs ont joué
         if (playerChoices.size() == 2) {
