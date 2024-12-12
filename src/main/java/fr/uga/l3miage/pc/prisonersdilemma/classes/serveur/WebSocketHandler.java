@@ -1,6 +1,5 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes.serveur;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.Joueur;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieIterative;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
@@ -10,7 +9,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class WebSocketHandler extends TextWebSocketHandler {
@@ -18,7 +16,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> players = new HashMap<>();
     private final Map<String, Boolean> playerChoices = new HashMap<>();
     private PartieIterative partie;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    static final String TRAHIR="trahir";
+    static final String COOPERER="coopérer";
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -47,12 +47,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
         String payload = message.getPayload().trim().toLowerCase();
 
         // Valider l'entrée du joueur
-        if (!payload.equals("coopérer") && !payload.equals("trahir")) {
+        if (!payload.equals(COOPERER) && !payload.equals(TRAHIR)) {
             session.sendMessage(new TextMessage("Choix invalide. Veuillez choisir 'coopérer' ou 'trahir'."));
             return;
         }
 
-        boolean choix = payload.equals("coopérer");
+        boolean choix = payload.equals(COOPERER);
         playerChoices.put(sessionId, choix);
         session.sendMessage(new TextMessage("Votre choix : " + (choix ? "coopérer" : "trahir")));
 
@@ -87,12 +87,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
         PartieJouee resultat = partie.jouerIteration(choixJoueur1, choixJoueur2);
 
         // Envoyer les résultats aux joueurs
-        players.get(playerIds[0]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur1 ? "coopérer" : "trahir")));
-        players.get(playerIds[0]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur2 ? "coopérer" : "trahir")));
+        players.get(playerIds[0]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
+        players.get(playerIds[0]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
         players.get(playerIds[0]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
 
-        players.get(playerIds[1]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur2 ? "coopérer" : "trahir")));
-        players.get(playerIds[1]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur1 ? "coopérer" : "trahir")));
+        players.get(playerIds[1]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
+        players.get(playerIds[1]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
         players.get(playerIds[1]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
 
         sendHistoriqueUpdate(players.get(playerIds[0]), partie.getJoueur1(), partie.getIterationActuelle());
@@ -118,8 +118,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
         String updateMessage = String.format(
                 "HISTORIQUE:%d,%s,%s",
                 tour,
-                dernierePartie.isChoixJoueur() ? "coopérer" : "trahir",
-                dernierePartie.isChoixAutreJoueur() ? "coopérer" : "trahir"
+                dernierePartie.isChoixJoueur() ? COOPERER : TRAHIR,
+                dernierePartie.isChoixAutreJoueur() ? COOPERER : TRAHIR
         );
 
         session.sendMessage(new TextMessage(updateMessage));
