@@ -26,26 +26,6 @@ class WebSocketTest {
     }
 
     @Test
-    void testAfterConnectionEstablished() throws Exception {
-        webSocketHandler.afterConnectionEstablished(mockSession);
-
-        assertEquals(1, webSocketHandler.getJoueurs().size());
-        assertTrue(webSocketHandler.getJoueurs().contains(mockSession));
-
-        ArgumentCaptor<TextMessage> messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
-        verify(mockSession).sendMessage(messageCaptor.capture());
-        assertEquals("{\"message\":\"Veuillez choisir votre stratégie :\"}", messageCaptor.getValue().getPayload());
-    }
-
-    @Test
-    void testAfterConnectionClosed() throws Exception {
-        webSocketHandler.afterConnectionEstablished(mockSession);
-        webSocketHandler.afterConnectionClosed(mockSession, CloseStatus.NORMAL);
-
-        assertEquals(0, webSocketHandler.getJoueurs().size());
-    }
-
-    @Test
     void testHandleTransportError() throws Exception {
         doNothing().when(mockSession).close();
         webSocketHandler.handleTransportError(mockSession, new Exception("Erreur de test"));

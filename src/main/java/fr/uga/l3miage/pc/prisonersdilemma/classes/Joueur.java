@@ -75,7 +75,7 @@ public class Joueur {
         }
     }
 
-    private void changerstrategies(int numeroStrategie) {
+    public void changerstrategies(int numeroStrategie) {
         adapteur.setStrategie(numeroStrategie);
         baseStrategie = StrategieFactory.createStrategie(numeroStrategie);
         modeStrategie = true;

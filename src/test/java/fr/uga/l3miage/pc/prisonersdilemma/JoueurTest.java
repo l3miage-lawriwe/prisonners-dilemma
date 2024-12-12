@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JoueurTest {
     @Test
     void testScoreTotal() {
-        Joueur joueur = new Joueur(1);
+        Joueur joueur = new Joueur();
+        joueur.changerstrategies(1);
         assertEquals(0,joueur.scoreTotal());
 
         joueur.aJouterPartieHistorique(new PartieJouee(true,false,0));
@@ -27,7 +28,8 @@ class JoueurTest {
 
     @Test
     void testJouer() {
-        Joueur joueur = new Joueur(1);
-        assertTrue(joueur.jouer(false));
+        Joueur joueur = new Joueur();
+        joueur.changerstrategies(1);
+        assertTrue(joueur.jouer(false,false));
     }
 }
