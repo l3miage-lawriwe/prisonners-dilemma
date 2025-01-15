@@ -65,19 +65,20 @@ public class Joueur {
     public void choisirStrategieAleatoire() {
         SecureRandom random = new SecureRandom();
         if (random.nextBoolean()) { // Choix aléatoire entre standard et alternative
-            int strategieAleatoire = random.nextInt(18) + 1; // Stratégies standards
+            int strategieAleatoire = random.nextInt(18) + 1; // Stratégies standard
             changerstrategies(strategieAleatoire);
             log.info("Bot a choisi une stratégie standard : {}", strategieAleatoire);
         } else {
             int strategieAlternative = random.nextInt(18) + 1; // stratégies alternatives du groupe 1_6
-            adapteur.setStrategie(strategieAlternative);
+            adapteur.setStrategie(TypeStrategieEnum.values()[strategieAlternative]);
             log.info("Bot a choisi une stratégie alternative : {}", strategieAlternative);
         }
     }
 
     public void changerstrategies(int numeroStrategie) {
-        adapteur.setStrategie(numeroStrategie);
-        baseStrategie = StrategieFactory.createStrategie(numeroStrategie);
+        TypeStrategieEnum strat = TypeStrategieEnum.values()[numeroStrategie];
+        adapteur.setStrategie(strat);
+        baseStrategie = StrategieFactory.createStrategie(strat);
         modeStrategie = true;
     }
 

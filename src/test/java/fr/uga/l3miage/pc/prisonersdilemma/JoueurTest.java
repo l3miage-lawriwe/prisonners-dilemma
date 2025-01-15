@@ -3,6 +3,7 @@ package fr.uga.l3miage.pc.prisonersdilemma;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.Joueur;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.TypeStrategieEnum;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,7 @@ class JoueurTest {
     @Test
     void testJouer() {
         Joueur joueur = new Joueur();
-        joueur.changerstrategies(1);
+        joueur.changerstrategies(15);
         assertTrue(joueur.jouer(false,false));
     }
 }

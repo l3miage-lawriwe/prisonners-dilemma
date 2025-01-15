@@ -2,6 +2,7 @@ package fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 
+import fr.uga.l3miage.pc.prisonersdilemma.classes.TypeStrategieEnum;
 import fr.uga.l3miage.pc.prisonersdilemma.enums.Decision;
 import fr.uga.l3miage.pc.prisonersdilemma.models.Strategie;
 
@@ -12,7 +13,7 @@ public class Adapteur {
 
     Strategie strategie;
 
-    public void setStrategie(int num){
+    public void setStrategie(TypeStrategieEnum num){
         strategie = AdaptateurStrategieFactory.createStrategieAdatpateur(num);
 
     }

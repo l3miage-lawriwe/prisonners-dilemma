@@ -2,6 +2,7 @@ package fr.uga.l3miage.pc.prisonersdilemma;
 
 import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
 import fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur.Adapteur;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.TypeStrategieEnum;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ class AdapateurTest {
     @Test
     void testadaptateur() {
         Adapteur adapteur = new Adapteur();
-        adapteur.setStrategie(16);
+        adapteur.setStrategie(TypeStrategieEnum.COOPERER);
 
         List<PartieJouee> historique = new ArrayList<>();
         historique.add(new PartieJouee(true,true,3));

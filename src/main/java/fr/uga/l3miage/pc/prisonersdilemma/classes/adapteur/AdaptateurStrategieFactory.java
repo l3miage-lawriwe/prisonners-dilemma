@@ -1,5 +1,6 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur;
 
+import fr.uga.l3miage.pc.prisonersdilemma.classes.TypeStrategieEnum;
 import fr.uga.l3miage.pc.prisonersdilemma.models.Strategie;
 import fr.uga.l3miage.pc.prisonersdilemma.models.strategies.*;
 
@@ -7,49 +8,49 @@ import fr.uga.l3miage.pc.prisonersdilemma.models.strategies.*;
 public class AdaptateurStrategieFactory {
 
     private AdaptateurStrategieFactory() {}
-    public static Strategie createStrategieAdatpateur(int nbStrategie) {
+    public static Strategie createStrategieAdatpateur(TypeStrategieEnum nbStrategie) {
         switch (nbStrategie) {
             // ADAPTATIF PAR DEFAUT
-            case 2 -> {
+            case TypeStrategieEnum.ALEATOIRE -> {
                 return new AleatoireStrategie();
             }
-            case 3, 8, 7 -> {
+            case TypeStrategieEnum.DONNANTDONNANT, TypeStrategieEnum.GRADUEL, TypeStrategieEnum.DONNANTDONNANTSOUPCONNEUX -> {
                 return new DonnantDonnantStrategie(); // GRADUEL et DONANT DONNAT SOUPCONNEUX n'existe pas dans le package de lola
             }
-            case 4 -> {
+            case TypeStrategieEnum.DONNANTDONNANTALEATOIRE -> {
                 return new DonnantDonnantAleatoireStrategie();
             }
-            case 5 -> {
+            case TypeStrategieEnum.DONNANTDONNANTDEUX -> {
                 return new DonnantPourDeuxDonnantStrategie();
             }
-            case 6 -> {
+            case TypeStrategieEnum.DONNANTDONNANTDEUXALEATOIRE -> {
                 return new DonnantPourDeuxDonnantAleatoireStrategie();
             }
-            case 9 -> {
+            case TypeStrategieEnum.PACIFICATEURNAIF -> {
                 return new PacificateurNaifStrategie();
             }
-            case 10 -> {
+            case TypeStrategieEnum.PAVLOV -> {
                 return new PavlovStrategie();
             }
-            case 11 -> {
+            case TypeStrategieEnum.PAVLOVALEATOIRE -> {
                 return new PavlovAleatoire();
             }
-            case 12, 13 -> {
+            case TypeStrategieEnum.RANCUNNIER, TypeStrategieEnum.RANCOUNIERDOUX -> {
                 return new RancunierStrategie(); // RANCUNNIER DOUX n'existe pas dans le package de lola
             }
-            case 14 -> {
+            case TypeStrategieEnum.SONDEURNAIF -> {
                 return new SondeurNaifStrategie();
             }
-            case 15 -> {
+            case TypeStrategieEnum.SONDEURREPENTANT -> {
                 return new SondeurRepentant();
             }
-            case 16 -> {
+            case TypeStrategieEnum.COOPERER -> {
                 return new CoopererStrategie();
             }
-            case 17 -> {
+            case TypeStrategieEnum.TRAHIR -> {
                 return new TrahirStrategie();
             }
-            case 18 -> {
+            case TypeStrategieEnum.VRAISPACIFICATEUR -> {
                 return new VraiPacificateurStrategie();
             }
             default -> {

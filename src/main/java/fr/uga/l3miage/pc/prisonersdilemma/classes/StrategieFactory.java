@@ -6,60 +6,60 @@ public class StrategieFactory {
 
     private StrategieFactory() {}
 
-    public static BaseStrategie createStrategie(int nbStrategie) {
-        switch (nbStrategie) {
-            case 1 -> {
+    public static BaseStrategie createStrategie(TypeStrategieEnum strategie) {
+        switch (strategie) {
+            case TypeStrategieEnum.ADAPTATIF -> {
                 return new StrategieAdaptatif();
             }
-            case 2 -> {
+            case TypeStrategieEnum.ALEATOIRE -> {
                 return new StrategieAleatoire();
             }
-            case 3 -> {
+            case TypeStrategieEnum.DONNANTDONNANT -> {
                 return new StrategieDonnantDonnant();
             }
-            case 4 -> {
+            case TypeStrategieEnum.DONNANTDONNANTALEATOIRE -> {
                 return new StrategieDonnantDonnantAleatoire();
             }
-            case 5 -> {
+            case TypeStrategieEnum.DONNANTDONNANTDEUX -> {
                 return new StrategieDonnantDonnantDeux();
             }
-            case 6 -> {
+            case TypeStrategieEnum.DONNANTDONNANTDEUXALEATOIRE -> {
                 return new StrategieDonnantDonnantDeuxAleatoire();
             }
-            case 7 -> {
+            case TypeStrategieEnum.DONNANTDONNANTSOUPCONNEUX -> {
                 return new StrategieDonnantDonnantSoupconneux();
             }
-            case 8 -> {
+            case TypeStrategieEnum.GRADUEL -> {
                 return new StrategieGraduel();
             }
-            case 9 -> {
+            case TypeStrategieEnum.PACIFICATEURNAIF -> {
                 return new StrategiePacificateurNaif();
             }
-            case 10 -> {
+            case TypeStrategieEnum.PAVLOV -> {
                 return new StrategiePavlov();
             }
-            case 11 -> {
+            case TypeStrategieEnum.PAVLOVALEATOIRE -> {
                 return new StrategiePavlovAleatoire();
             }
-            case 12 -> {
+            case TypeStrategieEnum.RANCUNNIER -> {
                 return new StrategieRancunier();
             }
-            case 13 -> {
+            case TypeStrategieEnum.RANCOUNIERDOUX -> {
                 return new StrategieRancunierDoux();
             }
-            case 14 -> {
+            case TypeStrategieEnum.SONDEURNAIF -> {
                 return new StrategieSondeurNaif();
             }
-            case 15 -> {
+            case TypeStrategieEnum.SONDEURREPENTANT -> {
                 return new StrategieSondeurRepentant();
             }
-            case 16 -> {
+            case TypeStrategieEnum.COOPERER -> {
                 return new StrategieToujoursCooperer();
             }
-            case 17 -> {
+            case TypeStrategieEnum.TRAHIR -> {
                 return new StrategieToujoursTrahir();
             }
-            case 18 -> {
+            case TypeStrategieEnum.VRAISPACIFICATEUR -> {
                 return new StrategieVraisPacificateur();
             }
             default -> {
