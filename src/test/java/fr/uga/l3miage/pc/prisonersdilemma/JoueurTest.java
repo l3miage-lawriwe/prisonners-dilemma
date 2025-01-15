@@ -14,7 +14,7 @@ class JoueurTest {
     @Test
     void testScoreTotal() {
         Joueur joueur = new Joueur();
-        joueur.changerstrategies(1);
+        joueur.changerstrategies(TypeStrategieEnum.ADAPTATIF);
         assertEquals(0,joueur.scoreTotal());
 
         joueur.aJouterPartieHistorique(new PartieJouee(true,false,0));
@@ -30,7 +30,7 @@ class JoueurTest {
     @Test
     void testJouer() {
         Joueur joueur = new Joueur();
-        joueur.changerstrategies(15);
+        joueur.changerstrategies(TypeStrategieEnum.COOPERER);
         assertTrue(joueur.jouer(false,false));
     }
 }

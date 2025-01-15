@@ -66,7 +66,7 @@ public class Joueur {
         SecureRandom random = new SecureRandom();
         if (random.nextBoolean()) { // Choix aléatoire entre standard et alternative
             int strategieAleatoire = random.nextInt(18) + 1; // Stratégies standard
-            changerstrategies(strategieAleatoire);
+            changerstrategies(TypeStrategieEnum.values()[strategieAleatoire]);
             log.info("Bot a choisi une stratégie standard : {}", strategieAleatoire);
         } else {
             int strategieAlternative = random.nextInt(18) + 1; // stratégies alternatives du groupe 1_6
@@ -75,8 +75,7 @@ public class Joueur {
         }
     }
 
-    public void changerstrategies(int numeroStrategie) {
-        TypeStrategieEnum strat = TypeStrategieEnum.values()[numeroStrategie];
+    public void changerstrategies(TypeStrategieEnum strat) {
         adapteur.setStrategie(strat);
         baseStrategie = StrategieFactory.createStrategie(strat);
         modeStrategie = true;
