@@ -1,8 +1,10 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes.serveur;
 
-import fr.uga.l3miage.pc.prisonersdilemma.classes.Joueur;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieIterative;
-import fr.uga.l3miage.pc.prisonersdilemma.classes.PartieJouee;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.game.model.Joueur;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.game.service.PartieIterative;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.game.service.PartieJouee;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -11,8 +13,11 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fr.uga.l3miage.pc.prisonersdilemma.classes.game.model.Joueur.createBot;
+
 public class WebSocketHandler extends TextWebSocketHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(WebSocketHandler.class);
     private final Map<String, WebSocketSession> players = new HashMap<>();
     private final Map<String, Boolean> playerChoices = new HashMap<>();
     private PartieIterative partie;
@@ -22,9 +27,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        log.info(session.getId());
         if (players.size() < 2) {
             players.put(session.getId(), session);
-            session.sendMessage(new TextMessage("Connecté en tant que joueur " + (players.size())));
+            session.sendMessage(new TextMessage("Bonnecté en tant que joueur " + (players.size())));
             if (players.size() == 2) {
                 startGame();
             } else {
@@ -66,8 +72,25 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         players.remove(session.getId());
         playerChoices.remove(session.getId());
-        broadcast("Un joueur s'est déconnecté. La partie est annulée.");
-        partie = null; // Réinitialiser la partie si un joueur quitte
+        broadcast("Un joueur s'est déconnecté.");
+
+        if (players.isEmpty()) {
+            // Si tous les joueurs sont déconnectés, terminer la partie
+            broadcast("Les deux joueurs se sont déconnectés. La partie est annulée.");
+            partie = null;
+            return; // Ne pas remplacer par un bot si les deux joueurs sont déconnectés
+        }
+
+        if (partie != null) {
+            // Remplace le joueur déconnecté par un bot s'il reste un joueur
+            Joueur bot = createBot();
+            if (partie.getJoueur1() != null && players.size() == 1) {
+                partie.remplacerJoueur(1, bot);
+            } else if (partie.getJoueur2() != null) {
+                partie.remplacerJoueur(2, bot);
+            }
+            broadcast("Le joueur déconnecté a été remplacé par un bot.");
+        }
     }
 
         private void startGame() throws BroadcastException {
@@ -85,7 +108,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
             // Jouer une itération
             PartieJouee resultat = partie.jouerIteration(choixJoueur1, choixJoueur2);
-
             // Envoyer les résultats aux joueurs
             try {
                 players.get(playerIds[0]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
@@ -94,7 +116,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
                 players.get(playerIds[1]).sendMessage(new TextMessage("Vous avez choisi : " + (choixJoueur2 ? COOPERER : TRAHIR)));
                 players.get(playerIds[1]).sendMessage(new TextMessage("Votre adversaire a choisi : " + (choixJoueur1 ? COOPERER : TRAHIR)));
-                players.get(playerIds[1]).sendMessage(new TextMessage("Résultat de cette itération : " + resultat.getResultatJoueur()));
+                players.get(playerIds[1]).sendMessage(new TextMessage("Résultat de cette itération : " + PartieIterative.convertResultForOpponent(resultat.getResultatJoueur())));
             } catch (Exception e) {
                 throw new EnvoiMessageException("Erreur d'envoi de résultat");
             }

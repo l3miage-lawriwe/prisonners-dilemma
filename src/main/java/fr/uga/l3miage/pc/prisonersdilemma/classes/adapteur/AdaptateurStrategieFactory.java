@@ -1,6 +1,6 @@
 package fr.uga.l3miage.pc.prisonersdilemma.classes.adapteur;
 
-import fr.uga.l3miage.pc.prisonersdilemma.classes.TypeStrategieEnum;
+import fr.uga.l3miage.pc.prisonersdilemma.classes.game.model.TypeStrategieEnum;
 import fr.uga.l3miage.pc.prisonersdilemma.models.Strategie;
 import fr.uga.l3miage.pc.prisonersdilemma.models.strategies.*;
 
